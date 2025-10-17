@@ -29,24 +29,31 @@ export const CAMPAIGNS: Campaign[] = [
           'Comportamento autodestrutivo (abuso de álcool/drogas)',
           'Frases como "Eu quero sumir" ou "Não aguento mais"',
         ],
+        source: { name: 'Ministério da Saúde', url: 'https://www.gov.br/saude/pt-br/assuntos/saude-de-a-a-z/s/suicidio' }
       },
       stats: {
         title: 'Dados sobre o Suicídio',
         items: [
           {
             value: '17.124',
-            label: 'Vidas perdidas em 2023',
-            description: 'Número de suicídios registrados no Brasil em 2023. Fonte: Anuário Bras. de Segurança Pública.',
+            label: 'Vidas perdidas',
+            description: 'Número de suicídios registrados no Brasil.',
+            year: 2023,
+            source: 'Anuário Bras. de Segurança Pública',
           },
           {
             value: '96,8%',
             label: 'Transtornos Mentais',
-            description: 'Dos casos de suicídio, 96,8% estão relacionados a transtornos mentais, como depressão e bipolaridade.',
+            description: 'Dos casos de suicídio estão relacionados a transtornos mentais, como depressão e bipolaridade.',
+            year: 'Estimativa',
+            source: 'Ministério da Saúde',
           },
           {
             value: '4ª',
             label: 'Causa de Morte',
-            description: 'Entre jovens de 15 a 29 anos no mundo, o suicídio é a quarta principal causa de morte. Fonte: OMS.',
+            description: 'Entre jovens de 15 a 29 anos no mundo, o suicídio é a quarta principal causa de morte.',
+            year: 2019,
+            source: 'OMS',
           },
         ],
       },
@@ -60,6 +67,39 @@ export const CAMPAIGNS: Campaign[] = [
           'Busque ajuda profissional ao primeiro sinal de alerta.',
           'Esteja presente e ofereça apoio a amigos e familiares.',
         ],
+        source: { name: 'CVV (Centro de Valorização da Vida)', url: 'https://www.cvv.org.br/blog/prevencao-do-suicidio-2/' }
+      },
+      riskFactors: {
+        title: 'Fatores de Risco',
+        items: [
+          'Histórico de transtornos mentais (depressão, bipolaridade, esquizofrenia).',
+          'Tentativas prévias de suicídio.',
+          'Abuso de álcool e outras drogas.',
+          'Histórico familiar de suicídio ou transtornos mentais.',
+          'Isolamento social e falta de apoio.',
+          'Eventos estressantes recentes (perda de emprego, luto, divórcio).',
+        ],
+        source: { name: 'Associação Brasileira de Psiquiatria', url: 'https://www.abp.org.br/post/fatores-de-risco-para-o-suic%C3%ADdio' }
+      },
+      patientRights: {
+        title: 'Direitos do Paciente',
+        items: [
+          {
+            name: 'Lei da Reforma Psiquiátrica (Lei 10.216/2001)',
+            description: 'Garante a proteção e os direitos das pessoas com transtornos mentais, priorizando o tratamento em serviços comunitários e buscando a reinserção social.',
+            source: { name: 'Planalto.gov.br', url: 'https://www.planalto.gov.br/ccivil_03/leis/leis_2001/l10216.htm' }
+          },
+          {
+            name: 'Auxílio-Doença',
+            description: 'Pessoas com transtornos mentais graves que as incapacitem para o trabalho têm direito ao auxílio-doença pelo INSS, mediante perícia médica.',
+            source: { name: 'INSS', url: 'https://www.gov.br/inss/pt-br/beneficios/beneficio-por-incapacidade-temporaria' }
+          },
+          {
+            name: 'Atendimento Confidencial e Gratuito',
+            description: 'O SUS oferece atendimento psicológico e psiquiátrico gratuito e confidencial através dos CAPS (Centros de Atenção Psicossocial).',
+            source: { name: 'Ministério da Saúde', url: 'https://www.gov.br/saude/pt-br/acesso-a-informacao/acoes-e-programas/caps' }
+          }
+        ]
       },
       tips: {
         title: 'Dica de Cuidado',
@@ -69,6 +109,23 @@ export const CAMPAIGNS: Campaign[] = [
           'Acolher alguém que está sofrendo, sem julgamentos, pode ser o primeiro passo para salvar uma vida.',
           'Não subestime o poder de uma boa noite de sono para a sua saúde mental.',
           'Celebrar pequenas conquistas diárias ajuda a manter uma perspectiva positiva.',
+        ]
+      },
+      supporterGuide: {
+        title: 'Guia para Apoiadores',
+        whatToSay: [
+            '“Estou aqui por você, não importa o quê.” (Mostra apoio incondicional)',
+            '“Seus sentimentos são válidos e importantes para mim.” (Valida a dor da pessoa)',
+            '“Você não está sozinho(a) nisso. Vamos passar por isso juntos.” (Oferece companhia)',
+            '“Não sou especialista, mas posso te ajudar a encontrar ajuda profissional.” (Incentiva ajuda qualificada)',
+            '“Quer conversar sobre o que está sentindo? Estou aqui para ouvir sem julgar.” (Abre um espaço seguro)',
+        ],
+        whatToAvoid: [
+            '“Pense positivo” ou “Anime-se”. (Minimiza o sofrimento)',
+            '“Isso é só para chamar atenção.” (Julga e invalida o pedido de ajuda)',
+            '“Sua vida é tão boa, por que você se sente assim?” (Gera culpa e incompreensão)',
+            '“Eu já passei por coisa pior e superei.” (Transforma a conversa em uma competição de sofrimento)',
+            '“Você precisa sair mais” ou dar conselhos não solicitados. (Simplifica um problema complexo)',
         ]
       },
       help: {
@@ -175,6 +232,7 @@ export const CAMPAIGNS: Campaign[] = [
             explanation: 'É verdade. Reconhecer que precisa de ajuda e procurar um profissional de saúde mental é um passo fundamental e corajoso para a recuperação e o bem-estar.',
           },
         ],
+        source: { name: 'Cartilha "Suicídio: informando para prevenir"', url: 'https://www.abp.org.br/suicidio-informando-para-prevenir' }
       },
     },
   },
@@ -205,6 +263,7 @@ export const CAMPAIGNS: Campaign[] = [
           'Pequenos nódulos nas axilas ou no pescoço',
           'Saída de líquido anormal pelos mamilos',
         ],
+        source: { name: 'INCA', url: 'https://www.gov.br/inca/pt-br/assuntos/cancer/tipos/mama/sintomas' }
       },
       stats: {
         title: 'Dados sobre o Câncer de Mama',
@@ -212,17 +271,23 @@ export const CAMPAIGNS: Campaign[] = [
           {
             value: 'Nº 1',
             label: 'Incidência no Brasil',
-            description: 'É o tipo de câncer com maior incidência entre mulheres no país (excluindo pele não melanoma). Fonte: INCA.',
+            description: 'É o tipo de câncer com maior incidência entre mulheres no país (excluindo pele não melanoma).',
+            year: '2023-2025',
+            source: 'INCA',
           },
           {
             value: '73.610',
-            label: 'Novos Casos (2023-2025)',
-            description: 'Estimativa de novos casos por ano no Brasil. Fonte: INCA.',
+            label: 'Novos Casos por Ano',
+            description: 'Estimativa de novos casos por ano no Brasil para o triênio.',
+            year: '2023-2025',
+            source: 'INCA',
           },
           {
             value: '95%',
             label: 'Chance de Cura',
             description: 'Quando diagnosticado em estágio inicial, as chances de tratamento bem-sucedido são altíssimas.',
+            year: 'Estimativa',
+            source: 'FEMAMA',
           },
         ],
       },
@@ -236,6 +301,44 @@ export const CAMPAIGNS: Campaign[] = [
           'Realize o autoexame das mamas mensalmente.',
           'Consulte seu médico e faça a mamografia de rastreamento.',
         ],
+        source: { name: 'INCA', url: 'https://www.gov.br/inca/pt-br/assuntos/cancer/tipos/mama/prevencao' }
+      },
+      riskFactors: {
+        title: 'Fatores de Risco',
+        items: [
+          'Ser mulher e envelhecer (principal fator).',
+          'Histórico familiar de câncer de mama ou ovário.',
+          'Mutações genéticas hereditárias (BRCA1 e BRCA2).',
+          'Primeira menstruação antes dos 12 anos e menopausa após os 55.',
+          'Obesidade, sedentarismo e consumo de álcool.',
+          'Não ter tido filhos ou ter a primeira gravidez após os 30 anos.',
+        ],
+        source: { name: 'INCA', url: 'https://www.gov.br/inca/pt-br/assuntos/cancer/tipos/mama/fatores-de-risco' }
+      },
+      patientRights: {
+        title: 'Direitos do Paciente',
+        items: [
+          {
+            name: 'Lei dos 60 Dias (Lei nº 12.732/2012)',
+            description: 'Garante o direito de iniciar o tratamento no SUS em, no máximo, 60 dias a partir da data do diagnóstico.',
+            source: { name: 'Planalto.gov.br', url: 'https://www.planalto.gov.br/ccivil_03/_ato2011-2014/2012/lei/l12732.htm' }
+          },
+          {
+            name: 'Reconstrução Mamária',
+            description: 'A mulher que teve a mama retirada devido ao câncer tem direito à cirurgia de reconstrução mamária pelo SUS.',
+            source: { name: 'Lei nº 13.770/2018', url: 'https://www.planalto.gov.br/ccivil_03/_ato2015-2018/2018/lei/l13770.htm' }
+          },
+          {
+            name: 'Saque do FGTS e PIS/PASEP',
+            description: 'Pacientes com câncer (ou que tenham dependentes com a doença) podem solicitar o saque integral do FGTS e do PIS/PASEP.',
+            source: { name: 'Caixa Econômica Federal', url: 'https://www.caixa.gov.br/beneficios-trabalhador/fgts/saque-fgts/paginas/default.aspx' }
+          },
+          {
+            name: 'Isenção de Impostos',
+            description: 'Direito à isenção de Imposto de Renda sobre aposentadoria e isenção de IPI na compra de veículos adaptados, em casos específicos.',
+            source: { name: 'Receita Federal', url: 'https://www.gov.br/pt-br/servicos/solicitar-isencao-do-imposto-de-renda' }
+          }
+        ]
       },
       tips: {
         title: 'Dica de Cuidado',
@@ -245,6 +348,23 @@ export const CAMPAIGNS: Campaign[] = [
             'Lembre-se: a mamografia é sua aliada. Faça o exame regularmente, conforme a orientação médica.',
             'Adicionar mais vegetais e frutas coloridas à sua dieta fortalece seu corpo e sua saúde.',
             'O apoio de amigas e familiares é fundamental. Converse sobre a importância da prevenção com as mulheres da sua vida.',
+        ]
+      },
+      supporterGuide: {
+        title: 'Guia para Apoiadores',
+        whatToSay: [
+            '“Como você está se sentindo hoje?” (Mostra interesse genuíno e abre espaço para a verdade)',
+            '“Estou pensando em você. Não se sinta pressionada a responder.” (Oferece apoio sem exigir nada em troca)',
+            '“Posso te ajudar com [tarefa específica]? Ex: levar as crianças, fazer compras.” (Oferece ajuda prática e concreta)',
+            '“Você é muito mais do que o seu diagnóstico.” (Lembra a pessoa de sua identidade completa)',
+            '“Estou aqui para ouvir, seja para desabafar ou falar de qualquer outra coisa.” (Dá liberdade para a pessoa guiar a conversa)',
+        ],
+        whatToAvoid: [
+            '“Seja forte” ou “Pense positivo”. (Pode invalidar o medo e a tristeza que são naturais)',
+            '“Minha tia teve isso e...” (Evite comparar experiências ou contar histórias assustadoras)',
+            'Dar conselhos médicos ou sobre tratamentos alternativos não solicitados. (Pode ser perigoso e desrespeitoso)',
+            '“Você está com uma aparência ótima!” (A pessoa pode não se sentir bem, invalidando seus sentimentos)',
+            'Fazer perguntas invasivas sobre o tratamento, corpo ou prognóstico. (Respeite a privacidade)',
         ]
       },
       help: {
@@ -349,7 +469,8 @@ export const CAMPAIGNS: Campaign[] = [
             isMyth: false,
             explanation: 'Verdade. O ato de amamentar promove a renovação das células mamárias e reduz os níveis de certos hormônios, diminuindo o risco de desenvolvimento da doença.',
           },
-        ]
+        ],
+        source: { name: 'INCA - Mitos e Verdades', url: 'https://www.gov.br/inca/pt-br/assuntos/cancer/tipos/mama/mitos-e-verdades' }
       },
     },
   },
@@ -380,6 +501,7 @@ export const CAMPAIGNS: Campaign[] = [
           'Necessidade de urinar mais vezes durante o dia ou à noite',
           'Presença de sangue na urina ou no sêmen',
         ],
+        source: { name: 'INCA', url: 'https://www.gov.br/inca/pt-br/assuntos/cancer/tipos/prostata/sintomas' }
       },
       stats: {
         title: 'Dados sobre o Câncer de Próstata',
@@ -387,17 +509,23 @@ export const CAMPAIGNS: Campaign[] = [
           {
             value: 'Nº 1',
             label: 'Incidência em Homens',
-            description: 'É o câncer mais incidente em homens no Brasil (excluindo pele não melanoma). Fonte: INCA.',
+            description: 'É o câncer mais incidente em homens no Brasil (excluindo pele não melanoma).',
+            year: '2023-2025',
+            source: 'INCA',
           },
           {
             value: '71.730',
-            label: 'Novos Casos (2023-2025)',
-            description: 'Estimativa de novos casos por ano no Brasil. Fonte: INCA.',
+            label: 'Novos Casos por Ano',
+            description: 'Estimativa de novos casos por ano no Brasil para o triênio.',
+            year: '2023-2025',
+            source: 'INCA',
           },
           {
             value: '1 morte',
             label: 'A cada 38 minutos',
             description: 'O câncer de próstata causa um óbito a cada 38 minutos no Brasil.',
+            year: 2022,
+            source: 'Instituto Lado a Lado pela Vida',
           },
         ],
       },
@@ -410,6 +538,44 @@ export const CAMPAIGNS: Campaign[] = [
           'Consulte um urologista anualmente a partir dos 50 anos (ou 45, se tiver histórico familiar).',
           'Realize os exames de rotina, como o toque retal e o PSA.',
         ],
+        source: { name: 'Sociedade Brasileira de Urologia', url: 'https://portaldaurologia.org.br/publico/doencas/cancer-de-prostata/' }
+      },
+      riskFactors: {
+        title: 'Fatores de Risco',
+        items: [
+          'Idade (risco aumenta significativamente após os 50 anos).',
+          'Histórico familiar de câncer de próstata (pai ou irmão).',
+          'Raça (maior incidência em homens negros).',
+          'Obesidade e sobrepeso.',
+          'Má alimentação (dieta pobre em frutas e vegetais).',
+          'Sedentarismo.',
+        ],
+        source: { name: 'INCA', url: 'https://www.gov.br/inca/pt-br/assuntos/cancer/tipos/prostata/fatores-de-risco' }
+      },
+      patientRights: {
+        title: 'Direitos do Paciente',
+        items: [
+          {
+            name: 'Lei dos 60 Dias (Lei nº 12.732/2012)',
+            description: 'Assim como em outros tipos de câncer, garante o início do tratamento no SUS em até 60 dias após o diagnóstico.',
+            source: { name: 'Planalto.gov.br', url: 'https://www.planalto.gov.br/ccivil_03/_ato2011-2014/2012/lei/l12732.htm' }
+          },
+          {
+            name: 'Auxílio-Doença e Aposentadoria por Invalidez',
+            description: 'Caso a doença ou o tratamento incapacite o paciente para o trabalho, ele pode solicitar benefícios junto ao INSS.',
+            source: { name: 'INSS', url: 'https://www.gov.br/inss/pt-br/beneficios/beneficio-por-incapacidade-temporaria' }
+          },
+          {
+            name: 'Acesso a Tratamento',
+            description: 'O SUS deve oferecer acesso a diversas modalidades de tratamento, como cirurgia, radioterapia e hormonioterapia, conforme a indicação médica.',
+            source: { name: 'Ministério da Saúde', url: 'https://www.gov.br/saude/pt-br/assuntos/saude-de-a-a-z/c/cancer-de-prostata' }
+          },
+          {
+            name: 'Isenção de Imposto de Renda',
+            description: 'Aposentados e pensionistas com câncer de próstata têm direito à isenção do Imposto de Renda relativo aos seus proventos.',
+            source: { name: 'Receita Federal', url: 'https://www.gov.br/pt-br/servicos/solicitar-isencao-do-imposto-de-renda' }
+          }
+        ]
       },
        tips: {
         title: 'Dica de Cuidado',
@@ -419,6 +585,23 @@ export const CAMPAIGNS: Campaign[] = [
             'Converse com seu médico. O urologista é seu principal aliado na prevenção.',
             'Não espere os sintomas aparecerem. O diagnóstico precoce do câncer de próstata começa com exames de rotina.',
             'Incentive seus amigos e familiares a também se cuidarem. A saúde é um esforço coletivo.',
+        ]
+      },
+      supporterGuide: {
+        title: 'Guia para Apoiadores',
+        whatToSay: [
+            '“Estou aqui para te dar uma força, seja para ir ao médico ou só para conversar.” (Oferece apoio prático e emocional)',
+            '“Cuidar da saúde é um ato de coragem. Admiro você por isso.” (Reforça a masculinidade de forma positiva)',
+            '“Sua saúde é importante para mim e para todos que te amam.” (Mostra o impacto positivo do autocuidado)',
+            '“Não precisa passar por isso sozinho. Conte comigo.” (Cria um ambiente de confiança)',
+            '“Vamos marcar nossos exames juntos?” (Normaliza a prevenção e cria um pacto de cuidado mútuo)',
+        ],
+        whatToAvoid: [
+            '“Isso é frescura” ou “Exame de toque é coisa de...” (Usa preconceito e desincentiva o cuidado)',
+            '“Homem de verdade não fica doente.” (Reforça estereótipos tóxicos e perigosos)',
+            'Pressionar ou fazer piadas sobre os exames preventivos. (Cria constrangimento e resistência)',
+            '“Se você não se cuidar, vai acabar mal.” (Usa o medo como motivador, o que pode causar o efeito contrário)',
+            'Ignorar o assunto ou fingir que não é importante. (A omissão também é uma forma de desincentivo)',
         ]
       },
       help: {
@@ -524,6 +707,7 @@ export const CAMPAIGNS: Campaign[] = [
             explanation: 'Verdade. Manter uma dieta equilibrada, praticar atividades físicas e evitar o tabagismo e o álcool são práticas que contribuem para a saúde geral e podem reduzir o risco da doença.',
           },
         ],
+        source: { name: 'Instituto Lado a Lado pela Vida', url: 'https://ladoaladopelavida.org.br/cancer-de-prostata-mitos-e-verdades' }
       },
     },
   },

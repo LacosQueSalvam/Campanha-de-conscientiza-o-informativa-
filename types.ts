@@ -20,12 +20,35 @@ export interface MythOrTruth {
 export interface MythsVsTruths {
   title: string;
   items: MythOrTruth[];
+  source?: { name: string; url: string };
+}
+
+export interface SupporterGuide {
+  title: string;
+  whatToSay: string[];
+  whatToAvoid: string[];
+}
+
+export interface RiskFactors {
+  title: string;
+  items: string[];
+  source?: { name: string; url: string };
+}
+
+export interface PatientRights {
+  title: string;
+  items: {
+    name: string;
+    description: string;
+    source?: { name: string; url: string };
+  }[];
 }
 
 export interface CampaignDetails {
   symptoms: {
     title: string;
     items: string[];
+    source?: { name: string; url: string };
   };
   stats: {
     title: string;
@@ -33,11 +56,14 @@ export interface CampaignDetails {
       value: string;
       label: string;
       description: string;
+      year?: string | number;
+      source?: string;
     }[];
   };
   prevention: {
     title: string;
     items: string[];
+    source?: { name: string; url: string };
   };
   help: {
     title: string;
@@ -54,6 +80,9 @@ export interface CampaignDetails {
     title: string;
     items: string[];
   };
+  supporterGuide?: SupporterGuide;
+  riskFactors?: RiskFactors;
+  patientRights?: PatientRights;
 }
 
 

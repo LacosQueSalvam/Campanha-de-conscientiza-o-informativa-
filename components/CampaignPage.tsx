@@ -51,9 +51,27 @@ const ShieldIcon = () => (
     </svg>
 );
 
+const RiskFactorsIcon = () => (
+    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor">
+      <path strokeLinecap="round" strokeLinejoin="round" d="M12 9v3.75m0-10.036A11.959 11.959 0 013.598 6 11.99 11.99 0 003 9.75c0 5.592 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.31-.21-2.57-.598-3.75h-.152c-3.196 0-6.1-1.249-8.25-3.286zm0 13.036h.008v.008H12v-.008z" />
+    </svg>
+);
+
+const PatientRightsIcon = () => (
+    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor">
+      <path strokeLinecap="round" strokeLinejoin="round" d="M12 6.042A8.967 8.967 0 006 3.75c-1.052 0-2.062.18-3 .512v14.25A8.987 8.987 0 016 18c2.305 0 4.408.867 6 2.292m0-14.25a8.966 8.966 0 016-2.292c1.052 0 2.062.18 3 .512v14.25A8.987 8.987 0 0018 18a8.967 8.967 0 00-6 2.292m0-14.25v14.25" />
+    </svg>
+);
+
 const LightbulbIcon = () => (
     <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
         <path strokeLinecap="round" strokeLinejoin="round" d="M9.663 17h4.673M12 3v1m6.364 1.636l-.707.707M21 12h-1M4 12H3m3.343-5.657l-.707-.707m2.828 9.9a5 5 0 117.072 0l-.548.547A3.374 3.374 0 0014 18.469V19a2 2 0 11-4 0v-.531c0-.895-.356-1.754-.988-2.386l-.548-.547z" />
+    </svg>
+);
+
+const SupportersIcon = () => (
+    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
+        <path strokeLinecap="round" strokeLinejoin="round" d="M12 4.354a4 4 0 110 5.292M15 21H3v-1a6 6 0 0112 0v1zm0 0h6v-1a6 6 0 00-9-5.197M15 21v-1a6 6 0 00-1.78-4.125M15 15a3 3 0 11-6 0 3 3 0 016 0z" />
     </svg>
 );
 
@@ -81,6 +99,27 @@ const ShareIcon = () => (
     </svg>
 );
 
+const LinkIcon = () => (
+    <svg xmlns="http://www.w3.org/2000/svg" className="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
+      <path strokeLinecap="round" strokeLinejoin="round" d="M13.828 10.172a4 4 0 00-5.656 0l-4 4a4 4 0 105.656 5.656l1.102-1.101m-.758-4.899a4 4 0 005.656 0l4-4a4 4 0 00-5.656-5.656l-1.1 1.1" />
+    </svg>
+);
+
+const SourceLink: React.FC<{ source: { name: string; url: string } }> = ({ source }) => (
+    <div className="mt-6 text-right">
+      <a
+        href={source.url}
+        target="_blank"
+        rel="noopener noreferrer"
+        className="inline-flex items-center gap-1.5 text-xs font-semibold text-white/50 hover:text-white/80 hover:underline transition-colors"
+      >
+        <LinkIcon />
+        Fonte: {source.name}
+      </a>
+    </div>
+);
+
+
 // --- Sub-item Icons ---
 const ChevronDoubleRightIcon = ({color}: {color: string}) => (
   <svg xmlns="http://www.w3.org/2000/svg" className="h-6 w-6 flex-shrink-0" fill="none" viewBox="0 0 24 24" stroke={color} strokeWidth={2}>
@@ -91,6 +130,12 @@ const ChevronDoubleRightIcon = ({color}: {color: string}) => (
 const CheckCircleIcon = ({color}: {color: string}) => (
     <svg xmlns="http://www.w3.org/2000/svg" className="h-6 w-6 flex-shrink-0" fill="none" viewBox="0 0 24 24" stroke={color} strokeWidth={2}>
         <path strokeLinecap="round" strokeLinejoin="round" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" />
+    </svg>
+);
+
+const XCircleIcon = ({color}: {color: string}) => (
+    <svg xmlns="http://www.w3.org/2000/svg" className="h-6 w-6 flex-shrink-0" fill="none" viewBox="0 0 24 24" stroke={color} strokeWidth={2}>
+        <path strokeLinecap="round" strokeLinejoin="round" d="M10 14l2-2m0 0l2-2m-2 2l-2-2m2 2l2 2m7-2a9 9 0 11-18 0 9 9 0 0118 0z" />
     </svg>
 );
 
@@ -321,7 +366,7 @@ const Quiz: React.FC<{quiz: QuizType, accentColor: string, glowColor: string, on
 
 
 // --- MYTHS VS TRUTHS COMPONENT (NEW INTERACTIVE VERSION) ---
-const MythsVsTruthsSection: React.FC<{ items: MythOrTruth[], accentColor: string, onAnswer: () => void }> = ({ items, accentColor, onAnswer }) => {
+const MythsVsTruthsSection: React.FC<{ items: MythOrTruth[], source?: {name: string, url: string}, accentColor: string, onAnswer: () => void }> = ({ items, source, accentColor, onAnswer }) => {
     const [currentIndex, setCurrentIndex] = useState(0);
     const [selectedAnswer, setSelectedAnswer] = useState<boolean | null>(null); // true for myth, false for truth
     const [score, setScore] = useState(0);
@@ -432,6 +477,7 @@ const MythsVsTruthsSection: React.FC<{ items: MythOrTruth[], accentColor: string
                     </div>
                 )}
             </div>
+            {source && <SourceLink source={source} />}
         </div>
     );
 };
@@ -589,40 +635,52 @@ const CampaignPage: React.FC<{ campaign: Campaign; onBack: () => void; campaigns
 
   const baseSlides = [
     { id: 'symptoms', title: 'Sinais', icon: <AlertIcon/>, content: (
-      <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-        {details.symptoms.items.map((item, index) => (
-          <div key={index} className="p-4 bg-white/5 rounded-lg flex items-center gap-4 transition-all hover:bg-white/10 hover:scale-105">
-            <ChevronDoubleRightIcon color={accentColor} />
-            <span className="opacity-90 text-left">{item}</span>
-          </div>
-        ))}
-      </div>
+      <>
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+          {details.symptoms.items.map((item, index) => (
+            <div key={index} className="p-4 bg-white/5 rounded-lg flex items-center gap-4 transition-all hover:bg-white/10 hover:scale-105">
+              <ChevronDoubleRightIcon color={accentColor} />
+              <span className="opacity-90 text-left">{item}</span>
+            </div>
+          ))}
+        </div>
+        {details.symptoms.source && <SourceLink source={details.symptoms.source} />}
+      </>
     )},
     { id: 'stats', title: 'Dados', icon: <ChartIcon/>, content: (
-      <div className="grid grid-cols-1 md:grid-cols-3 gap-8 md:gap-6 text-center">
-        {details.stats.items.map((stat, index) => (
-          <div key={index} className="p-6 bg-white/5 rounded-xl flex flex-col items-center justify-center gap-2 transition-all hover:bg-white/10 hover:scale-105">
-            <CountingNumber 
-                endValue={stat.value} 
-                isInView={currentIndex === 1}
-                className="h-14 text-4xl sm:text-5xl"
-                style={{color: accentColor, textShadow: `0 0 8px ${accentColor}`}}
-            />
-            <h4 className="text-lg font-bold text-white/90 mt-2">{stat.label}</h4>
-            <p className="text-sm text-white/60">{stat.description}</p>
-          </div>
-        ))}
-      </div>
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-8 md:gap-6 text-center">
+            {details.stats.items.map((stat, index) => (
+                <div key={index} className="p-6 bg-white/5 rounded-xl flex flex-col items-center justify-start gap-2 transition-all hover:bg-white/10 hover:scale-105">
+                    <CountingNumber 
+                        endValue={stat.value} 
+                        isInView={currentIndex === 1}
+                        className="h-14 text-4xl sm:text-5xl"
+                        style={{color: accentColor, textShadow: `0 0 8px ${accentColor}`}}
+                    />
+                    <h4 className="text-lg font-bold text-white/90 mt-2">{stat.label}</h4>
+                     {stat.year && (
+                        <div className="my-2 text-xs font-bold px-2.5 py-1 rounded-full uppercase tracking-wider" style={{ backgroundColor: hexToRgba(accentColor, 0.15), color: hexToRgba(accentColor, 0.9) }}>
+                            Dados de {stat.year}
+                        </div>
+                    )}
+                    <p className="text-sm text-white/60 flex-grow px-2">{stat.description}</p>
+                    {stat.source && <p className="text-xs text-white/50 mt-2 font-semibold">Fonte: {stat.source}</p>}
+                </div>
+            ))}
+        </div>
     )},
     { id: 'prevention', title: 'Prevenção', icon: <ShieldIcon/>, content: (
-      <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-          {details.prevention.items.map((item, index) => (
-              <div key={index} className="p-4 bg-white/5 rounded-lg flex items-center gap-4 transition-all hover:bg-white/10 hover:scale-105">
-                  <CheckCircleIcon color={accentColor} />
-                  <span className="opacity-90 text-left">{item}</span>
-              </div>
-          ))}
-      </div>
+        <>
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                {details.prevention.items.map((item, index) => (
+                    <div key={index} className="p-4 bg-white/5 rounded-lg flex items-center gap-4 transition-all hover:bg-white/10 hover:scale-105">
+                        <CheckCircleIcon color={accentColor} />
+                        <span className="opacity-90 text-left">{item}</span>
+                    </div>
+                ))}
+            </div>
+            {details.prevention.source && <SourceLink source={details.prevention.source} />}
+        </>
     )},
     { id: 'help', title: 'Ajuda', icon: <HelpIcon/>, content: (
       <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
@@ -650,14 +708,103 @@ const CampaignPage: React.FC<{ campaign: Campaign; onBack: () => void; campaigns
       </div>
     )},
     { id: 'myths', title: 'Mitos', icon: <MythsIcon />, content: (
-      <MythsVsTruthsSection items={details.mythsVsTruths.items} accentColor={accentColor} onAnswer={handleContentScroll} />
+      <MythsVsTruthsSection items={details.mythsVsTruths.items} source={details.mythsVsTruths.source} accentColor={accentColor} onAnswer={handleContentScroll} />
     )},
     { id: 'share', title: 'Compartilhe', icon: <ShareIcon />, content: (
       <SocialShareSection campaign={campaign} />
     )},
   ];
 
+  // Dynamically insert new sections
   const slides = [...baseSlides];
+  
+  if (details.patientRights) {
+    const patientRightsSlide = {
+        id: 'patientRights',
+        title: 'Direitos',
+        icon: <PatientRightsIcon />,
+        content: (
+            <div className="space-y-4">
+                {details.patientRights.items.map((item, index) => (
+                    <div key={index} className="p-6 bg-white/5 rounded-xl text-left transition-transform hover:scale-105 flex flex-col">
+                        <h4 className="font-bold text-xl" style={{color: accentColor}}>{item.name}</h4>
+                        <p className="text-white/80 mt-2 text-base flex-grow">{item.description}</p>
+                        {item.source && (
+                            <div className="mt-4 text-left">
+                                <a
+                                    href={item.source.url}
+                                    target="_blank"
+                                    rel="noopener noreferrer"
+                                    className="inline-flex items-center gap-1.5 text-xs font-semibold text-white/50 hover:text-white/80 hover:underline transition-colors"
+                                >
+                                    <LinkIcon />
+                                    Fonte: {item.source.name}
+                                </a>
+                            </div>
+                        )}
+                    </div>
+                ))}
+            </div>
+        )
+    };
+    slides.splice(3, 0, patientRightsSlide);
+  }
+
+  if (details.riskFactors) {
+    const riskFactorsSlide = {
+        id: 'riskFactors',
+        title: 'Riscos',
+        icon: <RiskFactorsIcon />,
+        content: (
+            <>
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                    {details.riskFactors.items.map((item, index) => (
+                        <div key={index} className="p-4 bg-white/5 rounded-lg flex items-center gap-4 transition-all hover:bg-white/10 hover:scale-105">
+                            <ChevronDoubleRightIcon color={accentColor} />
+                            <span className="opacity-90 text-left">{item}</span>
+                        </div>
+                    ))}
+                </div>
+                {details.riskFactors.source && <SourceLink source={details.riskFactors.source} />}
+            </>
+        )
+    };
+    slides.splice(3, 0, riskFactorsSlide);
+  }
+
+  if (details.supporterGuide) {
+    const supporterSlide = {
+        id: 'supporterGuide',
+        title: 'Apoiadores',
+        icon: <SupportersIcon />,
+        content: (
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-x-8 gap-y-10">
+                {/* What to Say Column */}
+                <div className="space-y-4">
+                    <h4 className="text-2xl font-bold text-green-400 text-center md:text-left">O que dizer</h4>
+                    {details.supporterGuide.whatToSay.map((item, index) => (
+                        <div key={index} className="p-4 bg-white/5 rounded-lg flex items-start gap-4 text-left">
+                            <CheckCircleIcon color="#4ade80" />
+                            <span className="opacity-90 flex-1">{item}</span>
+                        </div>
+                    ))}
+                </div>
+                {/* What to Avoid Column */}
+                <div className="space-y-4">
+                    <h4 className="text-2xl font-bold text-red-400 text-center md:text-left">O que evitar</h4>
+                    {details.supporterGuide.whatToAvoid.map((item, index) => (
+                        <div key={index} className="p-4 bg-white/5 rounded-lg flex items-start gap-4 text-left">
+                             <XCircleIcon color="#f87171" />
+                            <span className="opacity-90 flex-1">{item}</span>
+                        </div>
+                    ))}
+                </div>
+            </div>
+        )
+    };
+    slides.splice(3, 0, supporterSlide);
+  }
+
   if (details.tips && randomTip) {
       const tipSlide = {
           id: 'tip',
@@ -671,7 +818,7 @@ const CampaignPage: React.FC<{ campaign: Campaign; onBack: () => void; campaigns
               </div>
           )
       };
-      slides.splice(3, 0, tipSlide); // Insert tip slide after 'prevention'
+      slides.splice(4, 0, tipSlide); // Insert tip slide after supporter guide
   }
 
   useEffect(() => {
@@ -823,7 +970,7 @@ const CampaignPage: React.FC<{ campaign: Campaign; onBack: () => void; campaigns
                                             <div className="flex items-center justify-center gap-4 mb-8">
                                                 <div className="w-10 h-10" style={{color: accentColor}}>{slide.icon}</div>
                                                 <h3 className="text-3xl md:text-4xl font-bold" style={{color: accentColor, textShadow: `0 0 15px ${colors.neonGlow}`}}>
-                                                    {details[slide.id]?.title || slide.title}
+                                                    {details[slide.id as keyof typeof details]?.title || slide.title}
                                                 </h3>
                                             </div>
                                             <div>
