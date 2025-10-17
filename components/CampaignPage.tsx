@@ -2,11 +2,21 @@ import React, { useState, useEffect, useRef } from 'react';
 import { Campaign, Quiz as QuizType, MythOrTruth } from '../types';
 import HelpModal from './HelpModal';
 
-interface CampaignPageProps {
-  campaign: Campaign;
-  onBack: () => void;
-  campaigns: Campaign[];
-}
+// --- CUSTOM HOOK for Media Query ---
+const useMediaQuery = (query: string) => {
+  const [matches, setMatches] = useState(false);
+  useEffect(() => {
+    const media = window.matchMedia(query);
+    if (media.matches !== matches) {
+      setMatches(media.matches);
+    }
+    const listener = () => setMatches(media.matches);
+    window.addEventListener('resize', listener);
+    return () => window.removeEventListener('resize', listener);
+  }, [matches, query]);
+  return matches;
+};
+
 
 // --- ICON COMPONENTS ---
 const BackArrowIcon = () => (
@@ -152,7 +162,7 @@ const CountingNumber: React.FC<CountingNumberProps> = ({ endValue, isInView, cla
     );
 };
 
-// --- QUIZ COMPONENT ---
+// --- QUIZ COMPONENT (REDESIGNED) ---
 const CheckIcon = () => (
     <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5" viewBox="0 0 20 20" fill="currentColor">
         <path fillRule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clipRule="evenodd" />
@@ -165,7 +175,7 @@ const XIcon = () => (
     </svg>
 );
 
-const Quiz: React.FC<{quiz: QuizType, accentColor: string, onAnswer: () => void}> = ({ quiz, accentColor, onAnswer }) => {
+const Quiz: React.FC<{quiz: QuizType, accentColor: string, glowColor: string, onAnswer: () => void}> = ({ quiz, accentColor, glowColor, onAnswer }) => {
     const [currentQuestionIndex, setCurrentQuestionIndex] = useState(0);
     const [selectedOption, setSelectedOption] = useState<number | null>(null);
     const [score, setScore] = useState(0);
@@ -201,17 +211,26 @@ const Quiz: React.FC<{quiz: QuizType, accentColor: string, onAnswer: () => void}
         setQuizFinished(false);
     };
 
+    const getScoreMessage = () => {
+        const percentage = (score / quiz.questions.length) * 100;
+        if (percentage === 100) return "Excelente! Você é um expert no assunto.";
+        if (percentage >= 75) return "Muito bem! Seu conhecimento é impressionante.";
+        if (percentage >= 50) return "Bom trabalho! Continue aprendendo e se informando.";
+        return "Não desanime! O mais importante é a busca pelo conhecimento.";
+    };
+
     if (quizFinished) {
         return (
-            <div className="text-center p-6 bg-black/20 rounded-xl flex flex-col items-center gap-6 animate-fade-in-up-sm">
-                <h3 className="text-2xl font-bold">Quiz Concluído!</h3>
-                <p className="text-4xl font-black" style={{color: accentColor, textShadow: `0 0 10px ${accentColor}`}}>
-                    Você acertou {score} de {quiz.questions.length}
+            <div className="text-center p-8 bg-black/30 rounded-2xl flex flex-col items-center gap-6 animate-fade-in-up-sm border border-white/10" style={{boxShadow: `0 0 20px ${glowColor}`}}>
+                <h3 className="text-3xl font-bold" style={{color: accentColor, textShadow: `0 0 10px ${accentColor}`}}>Quiz Concluído!</h3>
+                <p className="text-6xl font-black" style={{color: accentColor, textShadow: `0 0 15px ${accentColor}`}}>
+                    {score}/{quiz.questions.length}
                 </p>
+                <p className="text-lg text-white/80">{getScoreMessage()}</p>
                 <button
                     onClick={handleRestartQuiz}
-                    style={{ backgroundColor: accentColor }}
-                    className={`px-8 py-3 rounded-full font-bold text-gray-900 shadow-lg transition-transform transform hover:scale-105`}
+                    className="mt-4 px-10 py-4 rounded-full font-bold text-gray-900 shadow-lg transition-transform transform hover:scale-105"
+                    style={{ backgroundColor: accentColor, boxShadow: `0 0 20px ${glowColor}` }}
                 >
                     Refazer Quiz
                 </button>
@@ -220,28 +239,40 @@ const Quiz: React.FC<{quiz: QuizType, accentColor: string, onAnswer: () => void}
     }
 
     return (
-        <div className="space-y-5">
-             <div className="text-center text-sm text-white/70 font-semibold">
-                Pergunta {currentQuestionIndex + 1} de {quiz.questions.length}
+        <div className="space-y-6">
+            {/* Progress Bar */}
+            <div>
+                <p className="text-center text-sm font-semibold text-white/70 mb-2">
+                    Pergunta {currentQuestionIndex + 1} de {quiz.questions.length}
+                </p>
+                <div className="w-full bg-white/10 rounded-full h-2.5">
+                    <div
+                        className="h-2.5 rounded-full transition-all duration-500 ease-out"
+                        style={{ width: `${((currentQuestionIndex + 1) / quiz.questions.length) * 100}%`, backgroundColor: accentColor, boxShadow: `0 0 10px ${glowColor}` }}
+                    ></div>
+                </div>
             </div>
-            <div className="p-6 bg-black/20 rounded-xl">
-                <p className="font-bold text-lg md:text-xl text-white/90 text-center">{currentQuestion.question}</p>
-                <div className="mt-6 space-y-3">
+
+            {/* Question Card */}
+            <div className="p-6 md:p-8 bg-black/20 rounded-2xl border border-white/10">
+                <p className="font-bold text-xl md:text-2xl text-white text-center leading-tight">{currentQuestion.question}</p>
+                <div className="mt-8 space-y-4">
                     {currentQuestion.options.map((option, optIndex) => {
                         const isCorrect = currentQuestion.correctAnswerIndex === optIndex;
                         const isSelected = selectedOption === optIndex;
-                        let stateClasses = 'bg-white/5 hover:bg-white/10 text-white/80';
+                        
+                        let stateClasses = 'border-white/10 bg-white/5 hover:bg-white/10 hover:border-white/20 text-white/90';
                         let icon = null;
 
                         if (isAnswered) {
                             if (isCorrect) {
-                                stateClasses = 'bg-green-500/20 text-green-300 border border-green-500';
-                                if (isSelected) icon = <CheckIcon />;
+                                stateClasses = 'bg-green-500/20 text-green-300 border-green-500/50 scale-105';
+                                icon = <CheckIcon />;
                             } else if (isSelected) {
-                                stateClasses = 'bg-red-500/20 text-red-300 border border-red-500';
+                                stateClasses = 'bg-red-500/20 text-red-300 border-red-500/50';
                                 icon = <XIcon />;
                             } else {
-                                stateClasses = 'bg-white/5 opacity-60';
+                                stateClasses = 'bg-white/5 border-transparent opacity-50';
                             }
                         }
                         
@@ -250,17 +281,18 @@ const Quiz: React.FC<{quiz: QuizType, accentColor: string, onAnswer: () => void}
                                 key={optIndex}
                                 onClick={() => handleAnswerSelect(optIndex)}
                                 disabled={isAnswered}
-                                className={`w-full p-3 rounded-lg flex items-center justify-between transition-all duration-300 ${stateClasses} ${!isAnswered ? 'cursor-pointer' : 'cursor-default'}`}
+                                className={`w-full p-4 rounded-xl flex items-center justify-between text-left transition-all duration-300 border-2 ${stateClasses} ${!isAnswered ? 'cursor-pointer' : 'cursor-default'}`}
                             >
-                                <span className="flex-grow text-center text-sm md:text-base">{option}</span>
-                                {icon && <span className="ml-4 flex-shrink-0">{icon}</span>}
+                                <span className="flex-grow text-sm md:text-base font-semibold">{option}</span>
+                                {icon && <span className="ml-4 flex-shrink-0 text-white">{icon}</span>}
                             </button>
                         );
                     })}
                 </div>
+                
                 {isAnswered && (
-                    <div className="mt-6 text-center animate-fade-in-up-sm space-y-4">
-                        <div className={`p-3 rounded-lg text-lg font-bold ${wasCorrect ? 'bg-green-500/20 text-green-300' : 'bg-red-500/20 text-red-300'}`}>
+                    <div className="mt-8 text-center animate-fade-in-up-sm space-y-4">
+                        <div className={`p-4 rounded-lg text-lg font-bold ${wasCorrect ? 'bg-green-500/20 text-green-300' : 'bg-red-500/20 text-red-300'}`}>
                            {wasCorrect ? 'Você acertou!' : 'Resposta Incorreta!'}
                         </div>
                         <div className="p-4 bg-black/30 rounded-lg text-white/80 text-sm">
@@ -268,8 +300,8 @@ const Quiz: React.FC<{quiz: QuizType, accentColor: string, onAnswer: () => void}
                         </div>
                         <button
                             onClick={handleNextQuestion}
-                            style={{ backgroundColor: accentColor }}
-                            className="w-full px-6 py-3 rounded-full font-bold text-gray-900 shadow-lg transition-transform transform hover:scale-105"
+                            className="w-full px-6 py-4 rounded-full font-bold text-gray-900 shadow-lg transition-transform transform hover:scale-105"
+                            style={{ backgroundColor: accentColor, boxShadow: `0 0 15px ${glowColor}`}}
                         >
                             {currentQuestionIndex < quiz.questions.length - 1 ? 'Próxima Pergunta' : 'Finalizar Quiz'}
                         </button>
@@ -279,6 +311,7 @@ const Quiz: React.FC<{quiz: QuizType, accentColor: string, onAnswer: () => void}
         </div>
     );
 };
+
 
 // --- MYTHS VS TRUTHS COMPONENT (NEW INTERACTIVE VERSION) ---
 const MythsVsTruthsSection: React.FC<{ items: MythOrTruth[], accentColor: string, onAnswer: () => void }> = ({ items, accentColor, onAnswer }) => {
@@ -460,14 +493,16 @@ const hexToRgba = (hex: string, alpha: number) => {
 };
 
 // --- MAIN PAGE COMPONENT ---
-const CampaignPage: React.FC<CampaignPageProps> = ({ campaign, onBack, campaigns }) => {
+const CampaignPage: React.FC<{ campaign: Campaign; onBack: () => void; campaigns: Campaign[] }> = ({ campaign, onBack }) => {
   const [currentIndex, setCurrentIndex] = useState(0);
   const [randomTip, setRandomTip] = useState('');
   const contentRef = useRef<HTMLDivElement>(null);
   const { details, colors } = campaign;
   const accentColor = colors.neon;
-  const [indicatorStyle, setIndicatorStyle] = useState({ height: 0, top: 0 });
   const navContainerRef = useRef<HTMLDivElement>(null);
+
+  const isMobile = useMediaQuery('(max-width: 767px)');
+  const [indicatorStyle, setIndicatorStyle] = useState({});
 
   const handleContentScroll = () => {
     setTimeout(() => {
@@ -545,8 +580,8 @@ const CampaignPage: React.FC<CampaignPageProps> = ({ campaign, onBack, campaigns
       </div>
     )},
     { id: 'quiz', title: 'Quiz', icon: <QuizIcon/>, content: (
-      <div className="w-full max-w-lg mx-auto">
-        <Quiz quiz={details.quiz} accentColor={accentColor} onAnswer={handleContentScroll} />
+      <div className="w-full max-w-2xl mx-auto">
+        <Quiz quiz={details.quiz} accentColor={accentColor} glowColor={colors.neonGlow} onAnswer={handleContentScroll} />
       </div>
     )},
     { id: 'myths', title: 'Mitos', icon: <MythsIcon />, content: (
@@ -576,15 +611,24 @@ const CampaignPage: React.FC<CampaignPageProps> = ({ campaign, onBack, campaigns
 
   useEffect(() => {
     if (navContainerRef.current) {
-        const activeButton = navContainerRef.current.children[currentIndex + 1] as HTMLElement; // +1 because the indicator is the first child
+        const activeButton = navContainerRef.current.children[currentIndex + 1] as HTMLElement;
         if (activeButton) {
-            setIndicatorStyle({
-                height: activeButton.offsetHeight,
-                top: activeButton.offsetTop
-            });
+            if (isMobile) {
+                setIndicatorStyle({
+                    width: `${activeButton.offsetWidth}px`,
+                    height: '100%',
+                    transform: `translateX(${activeButton.offsetLeft}px)`,
+                });
+            } else {
+                setIndicatorStyle({
+                    height: `${activeButton.offsetHeight}px`,
+                    width: '100%',
+                    transform: `translateY(${activeButton.offsetTop}px)`,
+                });
+            }
         }
     }
-  }, [currentIndex, slides.length]);
+  }, [currentIndex, isMobile, slides.length]);
 
   return (
     <>
@@ -604,6 +648,13 @@ const CampaignPage: React.FC<CampaignPageProps> = ({ campaign, onBack, campaigns
                 }
                 .animate-fade-in-up-sm {
                     animation: fade-in-up-sm 0.4s ease-out forwards;
+                }
+                .custom-scrollbar {
+                  scrollbar-width: none; /* Firefox */
+                  -ms-overflow-style: none;  /* Internet Explorer 10+ */
+                }
+                .custom-scrollbar::-webkit-scrollbar {
+                  display: none; /* Safari and Chrome */
                 }
             `}
         </style>
@@ -629,17 +680,16 @@ const CampaignPage: React.FC<CampaignPageProps> = ({ campaign, onBack, campaigns
             </div>
         </header>
         
-            <main className="flex-grow flex items-stretch p-4 md:p-8 overflow-hidden animate-fade-in-up gap-8">
-                {/* --- Left Vertical Navigation --- */}
-                <aside className="w-60 flex-shrink-0 bg-black/20 rounded-2xl p-4">
-                    <div ref={navContainerRef} className="relative flex flex-col gap-1 h-full">
+            <main className="flex-grow flex flex-col md:flex-row items-stretch p-4 md:p-8 overflow-hidden animate-fade-in-up gap-4 md:gap-8">
+                {/* --- Responsive Navigation --- */}
+                <aside className="w-full md:w-[16%] md:min-w-[240px] flex-shrink-0 bg-black/20 rounded-2xl p-2 md:p-4">
+                    <div ref={navContainerRef} className="relative flex flex-row md:flex-col gap-1 h-full overflow-x-auto md:overflow-x-hidden custom-scrollbar">
                         <div 
-                            className="absolute left-0 w-full rounded-lg transition-all duration-500 ease-[cubic-bezier(0.25,1,0.5,1)] border-l-4 pointer-events-none"
-                            style={{
-                                height: `${indicatorStyle.height}px`,
-                                transform: `translateY(${indicatorStyle.top}px)`,
-                                backgroundColor: 'transparent',
-                                borderColor: accentColor,
+                            className="absolute md:left-0 top-0 rounded-lg transition-all duration-500 ease-[cubic-bezier(0.25,1,0.5,1)] pointer-events-none"
+                             style={{
+                                ...indicatorStyle,
+                                borderBottom: isMobile ? `4px solid ${accentColor}`: 'none',
+                                borderLeft: !isMobile ? `4px solid ${accentColor}`: 'none',
                                 boxShadow: `0 0 15px ${hexToRgba(accentColor, 0.4)}`,
                             }}
                         ></div>
@@ -647,13 +697,13 @@ const CampaignPage: React.FC<CampaignPageProps> = ({ campaign, onBack, campaigns
                             <button
                                 key={slide.id}
                                 onClick={() => setCurrentIndex(index)}
-                                className={`relative flex flex-row items-center justify-start text-left p-3 rounded-lg w-full transition-colors duration-300 group ${
+                                className={`relative flex flex-col md:flex-row items-center justify-center md:justify-start text-center md:text-left p-2 md:p-3 rounded-lg w-20 md:w-full flex-shrink-0 transition-colors duration-300 group ${
                                     currentIndex === index ? 'text-white' : 'text-white/60 hover:text-white'
                                 }`}
                                 aria-label={`Ir para a seção ${slide.title}`}
                             >
                                 <div 
-                                    className={`w-7 h-7 mr-4 flex-shrink-0 flex items-center justify-center transition-all duration-300 group-hover:scale-110 [&>svg]:w-6 [&>svg]:h-6 ${currentIndex === index ? 'scale-110' : ''}`}
+                                    className={`w-7 h-7 md:mr-4 flex-shrink-0 flex items-center justify-center transition-all duration-300 group-hover:scale-110 [&>svg]:w-6 [&>svg]:h-6 ${currentIndex === index ? 'scale-110' : ''}`}
                                     style={{
                                         ...(currentIndex === index && { color: accentColor })
                                     }}
@@ -661,7 +711,7 @@ const CampaignPage: React.FC<CampaignPageProps> = ({ campaign, onBack, campaigns
                                     {slide.icon}
                                 </div>
                                 <span 
-                                    className="text-sm font-semibold tracking-wide"
+                                    className="text-xs mt-1 md:text-sm md:mt-0 font-semibold tracking-wide"
                                     style={{
                                         ...(currentIndex === index && { color: accentColor, textShadow: `0 0 5px ${accentColor}` })
                                     }}
@@ -688,12 +738,14 @@ const CampaignPage: React.FC<CampaignPageProps> = ({ campaign, onBack, campaigns
                                     style={{
                                         opacity,
                                         zIndex,
-                                        boxShadow: offset === 0 ? `0 0 30px ${accentColor}` : 'none',
+                                        boxShadow: offset === 0 ? `0 0 30px ${hexToRgba(accentColor, 0.3)}` : 'none',
                                     }}
                                 >
                                     <div 
                                         ref={index === currentIndex ? contentRef : null} 
-                                        className="w-full h-full p-6 sm:p-8 lg:p-12 pb-12 overflow-y-auto flex flex-col justify-center"
+                                        className={`custom-scrollbar w-full h-full p-6 sm:p-8 lg:p-12 pb-12 overflow-y-auto flex flex-col ${
+                                            slide.id === 'quiz' || slide.id === 'myths' ? 'justify-start' : 'justify-center'
+                                        }`}
                                     >
                                         <section className="text-center w-full">
                                             <div className="flex items-center justify-center gap-4 mb-8">

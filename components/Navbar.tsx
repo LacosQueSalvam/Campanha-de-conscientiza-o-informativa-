@@ -20,7 +20,7 @@ const Navbar: React.FC<NavbarProps> = ({ campaigns, activeIndex, setActiveIndex,
   const activeCampaign = campaigns[activeIndex];
 
   return (
-    <header className="fixed top-0 left-0 right-0 z-50 transition-colors duration-1000 ease-in-out bg-gradient-to-b from-black/70 to-transparent">
+    <header className="fixed top-0 left-0 right-0 z-50 transition-colors duration-1000 ease-in-out bg-black/20 backdrop-blur-md">
       <nav className="container mx-auto px-4 sm:px-6 lg:px-8">
         <div className="flex items-center justify-between h-20">
           <div className="flex-shrink-0">
@@ -90,7 +90,7 @@ const Navbar: React.FC<NavbarProps> = ({ campaigns, activeIndex, setActiveIndex,
 
       {isOpen && (
         <div className="md:hidden" id="mobile-menu">
-          <div className="mx-4 rounded-b-lg shadow-xl overflow-hidden bg-gray-900/90">
+          <div className="mx-4 rounded-b-lg shadow-xl overflow-hidden bg-black/20 backdrop-blur-md">
             <div className="px-2 pt-2 pb-3 space-y-1 sm:px-3">
               {campaigns.map((campaign, index) => (
                 <a

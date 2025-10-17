@@ -82,7 +82,7 @@ const Carousel: React.FC<CarouselProps> = ({ campaigns, activeIndex, setActiveIn
               <div
                 key={campaign.id}
                 className={`absolute inset-0 flex flex-col justify-center transition-opacity duration-1000 ease-out
-                ${ textPos === 'left' ? 'items-start text-left pl-8 md:pl-16 lg:pl-32' : 'items-center text-center' }
+                ${ textPos === 'left' ? 'items-start text-left pl-6 sm:pl-8 md:pl-16 lg:pl-32' : 'items-center text-center' }
                 ${ index === activeIndex ? 'opacity-100' : 'opacity-0 pointer-events-none' }`}
               >
                 {/* --- Dynamic Background Glow --- */}
@@ -94,7 +94,7 @@ const Carousel: React.FC<CarouselProps> = ({ campaigns, activeIndex, setActiveIn
                   }}
                 />
 
-                <h1 className={`text-5xl sm:text-6xl lg:text-8xl drop-shadow-lg transition-transform duration-700 ease-out uppercase neon-text-main ${
+                <h1 className={`text-4xl sm:text-6xl lg:text-8xl drop-shadow-lg transition-transform duration-700 ease-out uppercase neon-text-main ${
                     index === activeIndex ? 'translate-y-0' : '-translate-y-4'
                 }`}>
                   {campaign.title}

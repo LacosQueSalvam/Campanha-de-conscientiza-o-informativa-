@@ -1,5 +1,5 @@
 // Force refresh to ensure latest constants are loaded.
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import Navbar from './components/Navbar';
 import Carousel from './components/Carousel';
 import Showcase from './components/Showcase';
@@ -16,6 +16,14 @@ function App() {
   const [isHelpModalOpen, setIsHelpModalOpen] = useState(false);
   const activeCampaign = CAMPAIGNS[carouselIndex];
   
+  useEffect(() => {
+    // Preload campaign background images to make transitions smoother
+    CAMPAIGNS.forEach(campaign => {
+      const img = new Image();
+      img.src = campaign.image;
+    });
+  }, []); // Run only once on mount
+
   const handleNavigateToPage = (campaign: Campaign) => {
     setSelectedCampaign(null);
     setViewingCampaign(campaign);
