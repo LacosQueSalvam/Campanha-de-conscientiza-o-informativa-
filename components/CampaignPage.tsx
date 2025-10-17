@@ -25,6 +25,13 @@ const BackArrowIcon = () => (
     </svg>
 );
 
+const CloseIcon = () => (
+    <svg xmlns="http://www.w3.org/2000/svg" className="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
+        <path strokeLinecap="round" strokeLinejoin="round" d="M6 18L18 6M6 6l12 12" />
+    </svg>
+);
+
+
 // --- Main Section Icons ---
 const AlertIcon = () => (
     <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
@@ -440,6 +447,9 @@ const CheckIconSimple = () => (<svg xmlns="http://www.w3.org/2000/svg" className
 
 const SocialShareSection: React.FC<{ campaign: Campaign }> = ({ campaign }) => {
     const [copied, setCopied] = useState(false);
+    const [isQrModalOpen, setIsQrModalOpen] = useState(false);
+    const [isQrCardFlipped, setIsQrCardFlipped] = useState(false);
+
     const pageUrl = window.location.href;
     const shareText = `Saiba mais sobre a campanha ${campaign.title} e a importância da conscientização!`;
     const encodedText = encodeURIComponent(shareText);
@@ -451,35 +461,90 @@ const SocialShareSection: React.FC<{ campaign: Campaign }> = ({ campaign }) => {
         { name: 'Facebook', icon: <FacebookIcon />, url: `https://www.facebook.com/sharer/sharer.php?u=${encodedUrl}&quote=${encodedText}` },
     ];
 
+    const qrCodeUrl = `https://api.qrserver.com/v1/create-qr-code/?size=300x300&data=${encodedUrl}&qzone=1&bgcolor=f1f5f9`;
+
     const handleCopy = () => {
         navigator.clipboard.writeText(pageUrl).then(() => {
             setCopied(true);
+            setIsQrModalOpen(true);
+            setTimeout(() => setIsQrCardFlipped(true), 100);
             setTimeout(() => setCopied(false), 2000);
         });
     };
 
+    const handleCloseModal = () => {
+        setIsQrCardFlipped(false); // Flip back first
+        setTimeout(() => {
+            setIsQrModalOpen(false); // Then close the modal after animation
+        }, 600); // Match transition duration
+    };
+
     return (
-        <div className="text-center flex flex-col items-center gap-6">
-            <p className="text-lg text-white/80 max-w-2xl">
-                A conscientização salva vidas. Compartilhe esta página com seus amigos e familiares e ajude a espalhar informação de qualidade.
-            </p>
-            <div className="flex items-center justify-center gap-4 sm:gap-6 mt-4">
-                {socialLinks.map(link => (
-                    <a href={link.url} target="_blank" rel="noopener noreferrer" aria-label={`Compartilhar no ${link.name}`} 
-                       key={link.name}
-                       className="p-4 rounded-full bg-white/10 text-white hover:bg-white/20 transition-all transform hover:scale-110"
-                       style={{ color: campaign.colors.neonGlow }}>
-                        {link.icon}
-                    </a>
-                ))}
-                <button onClick={handleCopy} aria-label="Copiar link"
-                        className="p-4 rounded-full bg-white/10 text-white hover:bg-white/20 transition-all transform hover:scale-110"
-                        style={{ color: campaign.colors.neonGlow }}>
-                    {copied ? <CheckIconSimple /> : <CopyLinkIcon />}
-                </button>
+        <>
+            <div className="text-center flex flex-col items-center gap-6">
+                <p className="text-lg text-white/80 max-w-2xl">
+                    A conscientização salva vidas. Compartilhe esta página com seus amigos e familiares e ajude a espalhar informação de qualidade.
+                </p>
+                <div className="flex items-center justify-center gap-4 sm:gap-6 mt-4">
+                    {socialLinks.map(link => (
+                        <a href={link.url} target="_blank" rel="noopener noreferrer" aria-label={`Compartilhar no ${link.name}`} 
+                           key={link.name}
+                           className="p-4 rounded-full bg-white/10 text-white hover:bg-white/20 transition-all transform hover:scale-110"
+                           style={{ color: campaign.colors.neonGlow }}>
+                            {link.icon}
+                        </a>
+                    ))}
+                    <button onClick={handleCopy} aria-label="Copiar link"
+                            className="p-4 rounded-full bg-white/10 text-white hover:bg-white/20 transition-all transform hover:scale-110"
+                            style={{ color: campaign.colors.neonGlow }}>
+                        {copied ? <CheckIconSimple /> : <CopyLinkIcon />}
+                    </button>
+                </div>
+                {copied && <p className="text-green-400 animate-fade-in-up-sm">Link copiado para a área de transferência!</p>}
             </div>
-            {copied && <p className="mt-4 text-green-400 animate-fade-in-up-sm">Link copiado para a área de transferência!</p>}
-        </div>
+
+            {isQrModalOpen && (
+                <div 
+                    className="fixed inset-0 z-[100] flex items-center justify-center bg-black/70 backdrop-blur-sm animate-fade-in"
+                    onClick={handleCloseModal}
+                >
+                    <div 
+                        className="w-full max-w-sm h-[28rem] [perspective:1500px]"
+                        onClick={(e) => e.stopPropagation()}
+                    >
+                        <div className={`relative w-full h-full transition-transform duration-700 ease-in-out [transform-style:preserve-3d] ${isQrCardFlipped ? '[transform:rotateY(180deg)]' : ''}`}>
+                            {/* Front Face */}
+                            <div className="absolute inset-0 bg-gray-800 rounded-2xl border border-white/10 shadow-2xl flex flex-col items-center justify-center p-6 text-center text-white/80 [backface-visibility:hidden]">
+                                <div className="w-16 h-16 [&>svg]:w-16 [&>svg]:h-16" style={{color: campaign.colors.neon}}><ShareIcon /></div>
+                                <h3 className="mt-6 text-2xl font-bold text-white">Compartilhe com QR Code</h3>
+                                <p className="mt-2">Prepare-se para escanear...</p>
+                                <button
+                                    onClick={handleCloseModal}
+                                    className="absolute top-4 right-4 p-2 rounded-full text-gray-400 bg-gray-900/50 hover:bg-gray-700/70 transition-colors"
+                                    aria-label="Fechar"
+                                >
+                                    <CloseIcon />
+                                </button>
+                            </div>
+                            
+                            {/* Back Face */}
+                            <div className="absolute inset-0 bg-slate-100 rounded-2xl p-6 flex flex-col items-center justify-center [transform:rotateY(180deg)] [backface-visibility:hidden] shadow-2xl">
+                                <img src={qrCodeUrl} alt="QR Code para o site" width="280" height="280" className="rounded-lg shadow-md" />
+                                <p className="mt-4 text-center text-lg text-gray-800 font-bold">Aponte sua câmera aqui!</p>
+                                <p className="mt-1 text-sm text-gray-500">Escaneie para abrir a página no seu celular.</p>
+                                <button
+                                    onClick={handleCloseModal}
+                                    className="absolute top-4 right-4 p-2 rounded-full text-gray-500 bg-gray-200/50 hover:bg-gray-300/70 transition-colors"
+                                    aria-label="Fechar"
+                                >
+                                    <CloseIcon />
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            )}
+        </>
     );
 };
 
@@ -635,6 +700,13 @@ const CampaignPage: React.FC<{ campaign: Campaign; onBack: () => void; campaigns
         <div className={`h-screen w-full bg-gradient-to-br ${colors.bg} font-sans text-white overflow-hidden flex flex-col`}>
             <style>
             {`
+                @keyframes fade-in {
+                    from { opacity: 0; }
+                    to { opacity: 1; }
+                }
+                .animate-fade-in {
+                    animation: fade-in 0.3s ease-out forwards;
+                }
                 @keyframes fade-in-up {
                 0% { opacity: 0; transform: translateY(20px); }
                 100% { opacity: 1; transform: translateY(0); }
@@ -734,7 +806,7 @@ const CampaignPage: React.FC<{ campaign: Campaign; onBack: () => void; campaigns
                             return (
                                 <div
                                     key={slide.id}
-                                    className={`absolute top-0 left-0 w-full h-full bg-black/30 backdrop-blur-2xl rounded-3xl shadow-2xl border border-white/10 text-white flex flex-col transition-opacity duration-700 ease-out ${opacity === 0 ? 'pointer-events-none' : ''}`}
+                                    className={`absolute top-0 left-0 w-full h-full bg-black/30 backdrop-blur-2xl rounded-3xl shadow-2xl border border-white/10 text-white flex flex-col transition-opacity duration-700 ease-out ${opacity === 1 ? 'pointer-events-auto' : 'pointer-events-none'}`}
                                     style={{
                                         opacity,
                                         zIndex,
