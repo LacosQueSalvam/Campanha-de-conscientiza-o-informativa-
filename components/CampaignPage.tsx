@@ -954,7 +954,7 @@ const CampaignPage: React.FC<{ campaign: Campaign; onBack: () => void; campaigns
                                     key={slide.id}
                                     className={`absolute top-0 left-0 w-full h-full bg-black/30 backdrop-blur-2xl rounded-3xl shadow-2xl border border-white/10 text-white flex flex-col transition-transform duration-700 ease-[cubic-bezier(0.4,0,0.2,1)]`}
                                     style={{
-                                        transform: `translateX(${offset * 100}%)`,
+                                        transform: `translateY(${offset * 100}%)`,
                                         zIndex,
                                         boxShadow: offset === 0 ? `0 0 30px ${hexToRgba(accentColor, 0.3)}` : 'none',
                                     }}
