@@ -1,4 +1,3 @@
-// Force refresh to ensure latest constants are loaded.
 import React, { useState, useEffect } from 'react';
 import Navbar from './components/Navbar';
 import Carousel from './components/Carousel';
@@ -10,12 +9,14 @@ import { Campaign } from './types';
 import BackgroundEffects from './components/BackgroundEffects';
 import CreatorsPage from './components/CreatorsPage';
 import Footer from './components/Footer';
+import StoriesPage from './components/StoriesPage';
 
 function App() {
   const [carouselIndex, setCarouselIndex] = useState<number>(0);
   const [selectedCampaign, setSelectedCampaign] = useState<Campaign | null>(null);
   const [viewingCampaign, setViewingCampaign] = useState<Campaign | null>(null);
   const [viewingCreators, setViewingCreators] = useState(false);
+  const [viewingStories, setViewingStories] = useState(false);
   const [isHelpModalOpen, setIsHelpModalOpen] = useState(false);
   const activeCampaign = CAMPAIGNS[carouselIndex];
   
@@ -35,6 +36,7 @@ function App() {
   const handleBackToHome = () => {
     setViewingCampaign(null);
     setViewingCreators(false);
+    setViewingStories(false);
   }
 
   if (viewingCampaign) {
@@ -43,6 +45,10 @@ function App() {
 
   if (viewingCreators) {
     return <CreatorsPage onBack={handleBackToHome} activeCampaign={activeCampaign} />
+  }
+
+  if (viewingStories) {
+    return <StoriesPage onBack={handleBackToHome} campaigns={CAMPAIGNS} activeCampaign={activeCampaign} />
   }
 
   return (
@@ -71,6 +77,7 @@ function App() {
           setActiveIndex={setCarouselIndex}
           onHelpClick={() => setIsHelpModalOpen(true)}
           onCreatorsClick={() => setViewingCreators(true)}
+          onStoriesClick={() => setViewingStories(true)}
         />
         <main className="flex-grow">
           <Carousel

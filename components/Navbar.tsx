@@ -7,6 +7,7 @@ interface NavbarProps {
   setActiveIndex: React.Dispatch<React.SetStateAction<number>>;
   onHelpClick: () => void;
   onCreatorsClick: () => void;
+  onStoriesClick: () => void;
 }
 
 const HeartIcon = () => (
@@ -16,7 +17,7 @@ const HeartIcon = () => (
 );
 
 
-const Navbar: React.FC<NavbarProps> = ({ campaigns, activeIndex, setActiveIndex, onHelpClick, onCreatorsClick }) => {
+const Navbar: React.FC<NavbarProps> = ({ campaigns, activeIndex, setActiveIndex, onHelpClick, onCreatorsClick, onStoriesClick }) => {
   const [isOpen, setIsOpen] = useState(false);
   const activeCampaign = campaigns[activeIndex];
 
@@ -57,6 +58,13 @@ const Navbar: React.FC<NavbarProps> = ({ campaigns, activeIndex, setActiveIndex,
                   {campaign.title}
                 </a>
               ))}
+                <a
+                  href="#"
+                  onClick={(e) => { e.preventDefault(); onStoriesClick(); }}
+                  className="px-3 py-2 rounded-md text-sm font-medium transition-all duration-300 transform text-gray-200 hover:text-white hover:bg-white/10 hover:shadow-lg hover:-translate-y-0.5 active:scale-95"
+                >
+                  Histórias
+                </a>
                 <a
                   href="#"
                   onClick={(e) => { e.preventDefault(); onCreatorsClick(); }}
@@ -118,6 +126,17 @@ const Navbar: React.FC<NavbarProps> = ({ campaigns, activeIndex, setActiveIndex,
                   {campaign.title}
                 </a>
               ))}
+               <a
+                  href="#"
+                  onClick={(e) => {
+                    e.preventDefault();
+                    onStoriesClick();
+                    setIsOpen(false);
+                  }}
+                  className="block px-3 py-2 rounded-md text-base font-medium text-gray-200 hover:text-white hover:bg-white/10 hover:shadow-md active:scale-95"
+                >
+                  Histórias
+                </a>
                <a
                   href="#"
                   onClick={(e) => {

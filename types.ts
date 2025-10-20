@@ -56,6 +56,13 @@ export interface PatientRights {
   }[];
 }
 
+export interface Story {
+  id: number;
+  campaignId: 'setembro-amarelo' | 'outubro-rosa' | 'novembro-azul';
+  author: string;
+  text: string;
+}
+
 export interface CampaignDetails {
   symptoms: {
     title: string;
