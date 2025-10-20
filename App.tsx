@@ -9,6 +9,7 @@ import { CAMPAIGNS } from './constants';
 import { Campaign } from './types';
 import BackgroundEffects from './components/BackgroundEffects';
 import CreatorsPage from './components/CreatorsPage';
+import Footer from './components/Footer';
 
 function App() {
   const [carouselIndex, setCarouselIndex] = useState<number>(0);
@@ -46,7 +47,7 @@ function App() {
 
   return (
     <>
-      <div className="relative w-full min-h-screen bg-gray-900 overflow-hidden">
+      <div className="relative w-full min-h-screen bg-gray-900 overflow-hidden flex flex-col">
         {/* Background Image & Overlay */}
         <div className="absolute inset-0 w-full h-full z-0">
           {CAMPAIGNS.map((campaign, index) => (
@@ -71,7 +72,7 @@ function App() {
           onHelpClick={() => setIsHelpModalOpen(true)}
           onCreatorsClick={() => setViewingCreators(true)}
         />
-        <main>
+        <main className="flex-grow">
           <Carousel
             campaigns={CAMPAIGNS}
             activeIndex={carouselIndex}
@@ -79,6 +80,7 @@ function App() {
             onShowcaseSelect={setSelectedCampaign}
           />
         </main>
+        <Footer activeCampaign={activeCampaign} />
       </div>
 
       {selectedCampaign && (

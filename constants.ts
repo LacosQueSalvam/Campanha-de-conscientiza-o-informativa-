@@ -113,19 +113,40 @@ export const CAMPAIGNS: Campaign[] = [
       },
       supporterGuide: {
         title: 'Guia para Apoiadores',
-        whatToSay: [
-            '“Estou aqui por você, não importa o quê.” (Mostra apoio incondicional)',
-            '“Seus sentimentos são válidos e importantes para mim.” (Valida a dor da pessoa)',
-            '“Você não está sozinho(a) nisso. Vamos passar por isso juntos.” (Oferece companhia)',
-            '“Não sou especialista, mas posso te ajudar a encontrar ajuda profissional.” (Incentiva ajuda qualificada)',
-            '“Quer conversar sobre o que está sentindo? Estou aqui para ouvir sem julgar.” (Abre um espaço seguro)',
-        ],
-        whatToAvoid: [
-            '“Pense positivo” ou “Anime-se”. (Minimiza o sofrimento)',
-            '“Isso é só para chamar atenção.” (Julga e invalida o pedido de ajuda)',
-            '“Sua vida é tão boa, por que você se sente assim?” (Gera culpa e incompreensão)',
-            '“Eu já passei por coisa pior e superei.” (Transforma a conversa em uma competição de sofrimento)',
-            '“Você precisa sair mais” ou dar conselhos não solicitados. (Simplifica um problema complexo)',
+        scenarios: [
+            {
+                scenario: "Um amigo diz: 'Eu sinto que sou um fardo para todos. Seria melhor se eu não estivesse aqui.' O que você responde?",
+                goodResponse: {
+                    text: "“Estou aqui por você. Seus sentimentos são importantes e quero te ajudar a encontrar apoio.”",
+                    explanation: "Valida os sentimentos da pessoa, oferece apoio incondicional e direciona para ajuda profissional, sem julgamentos."
+                },
+                badResponse: {
+                    text: "“Não diga isso! Sua vida é ótima, você tem que pensar positivo.”",
+                    explanation: "Minimiza o sofrimento da pessoa, pode gerar culpa e não oferece uma solução prática para a dor que ela está sentindo."
+                }
+            },
+            {
+                scenario: "Alguém próximo parece muito isolado e triste. Você decide abordar a pessoa. Como você começa a conversa?",
+                goodResponse: {
+                    text: "“Tenho notado que você parece um pouco distante ultimamente. Quer conversar sobre o que está sentindo? Estou aqui para ouvir.”",
+                    explanation: "Mostra que você se importa, abre um espaço seguro para o diálogo e oferece escuta sem pressão ou julgamento."
+                },
+                badResponse: {
+                    text: "“Você precisa sair mais, se animar! Deixe de ser tão pessimista.”",
+                    explanation: "Oferece conselhos simplistas, ignora a complexidade do problema e pode fazer a pessoa se sentir ainda mais incompreendida."
+                }
+            },
+            {
+                scenario: "Durante uma conversa, uma pessoa menciona 'não aguentar mais'. Qual sua reação imediata?",
+                goodResponse: {
+                    text: "“Isso soa muito pesado. Você não está sozinho(a) nisso. Vamos encontrar ajuda juntos.”",
+                    explanation: "Leva a sério o sinal de alerta, oferece companhia e reforça a ideia de que buscar ajuda é um passo a ser dado em conjunto."
+                },
+                badResponse: {
+                    text: "“Todo mundo passa por fases ruins. Eu já passei por coisa pior e superei.”",
+                    explanation: "Transforma a conversa em uma competição de sofrimento, diminuindo a dor da outra pessoa e não oferecendo o apoio necessário."
+                }
+            }
         ]
       },
       help: {
@@ -352,19 +373,40 @@ export const CAMPAIGNS: Campaign[] = [
       },
       supporterGuide: {
         title: 'Guia para Apoiadores',
-        whatToSay: [
-            '“Como você está se sentindo hoje?” (Mostra interesse genuíno e abre espaço para a verdade)',
-            '“Estou pensando em você. Não se sinta pressionada a responder.” (Oferece apoio sem exigir nada em troca)',
-            '“Posso te ajudar com [tarefa específica]? Ex: levar as crianças, fazer compras.” (Oferece ajuda prática e concreta)',
-            '“Você é muito mais do que o seu diagnóstico.” (Lembra a pessoa de sua identidade completa)',
-            '“Estou aqui para ouvir, seja para desabafar ou falar de qualquer outra coisa.” (Dá liberdade para a pessoa guiar a conversa)',
-        ],
-        whatToAvoid: [
-            '“Seja forte” ou “Pense positivo”. (Pode invalidar o medo e a tristeza que são naturais)',
-            '“Minha tia teve isso e...” (Evite comparar experiências ou contar histórias assustadoras)',
-            'Dar conselhos médicos ou sobre tratamentos alternativos não solicitados. (Pode ser perigoso e desrespeitoso)',
-            '“Você está com uma aparência ótima!” (A pessoa pode não se sentir bem, invalidando seus sentimentos)',
-            'Fazer perguntas invasivas sobre o tratamento, corpo ou prognóstico. (Respeite a privacidade)',
+        scenarios: [
+            {
+                scenario: "Uma amiga te conta que foi diagnosticada com câncer de mama e está assustada. O que você diz?",
+                goodResponse: {
+                    text: "“Sinto muito que esteja passando por isso. Estou aqui para o que precisar, seja para conversar ou te levar nas consultas.”",
+                    explanation: "Valida os sentimentos dela, oferece apoio concreto e mostra que ela não está sozinha, sem fazer promessas vazias."
+                },
+                badResponse: {
+                    text: "“Não se preocupe, vai dar tudo certo! Minha tia teve isso e se curou rapidinho.”",
+                    explanation: "Embora bem-intencionado, pode minimizar o medo da pessoa e invalidar seus sentimentos. Comparar experiências nem sempre ajuda."
+                }
+            },
+            {
+                scenario: "Sua parceira está passando pelo tratamento e se sente mal com as mudanças no corpo. Como você pode apoiá-la?",
+                goodResponse: {
+                    text: "“Você é linda e forte, e estamos passando por isso juntos. Como posso te ajudar a se sentir mais confortável hoje?”",
+                    explanation: "Reforça o amor e a parceria, valida a beleza dela além da aparência física e pergunta de forma prática como pode ajudar."
+                },
+                badResponse: {
+                    text: "“A aparência não importa agora, o importante é a saúde.”",
+                    explanation: "Ignora o sofrimento legítimo dela com a autoestima, o que pode fazê-la se sentir incompreendida e sozinha em seus sentimentos."
+                }
+            },
+            {
+                scenario: "Uma colega de trabalho está voltando após a cirurgia. O que é apropriado dizer?",
+                goodResponse: {
+                    text: "“Que bom te ver de volta! Se precisar de algo ou de um ritmo mais leve, me avise. Estamos felizes por ter você aqui.”",
+                    explanation: "É acolhedor, profissional e oferece ajuda prática sem ser invasivo, respeitando a privacidade e o ritmo dela."
+                },
+                badResponse: {
+                    text: "“E aí, como foi a cirurgia? Fizeram a reconstrução? Está tudo bem mesmo?”",
+                    explanation: "Faz perguntas invasivas sobre o tratamento e o corpo, o que pode ser extremamente desconfortável e desrespeitoso."
+                }
+            }
         ]
       },
       help: {
@@ -589,19 +631,40 @@ export const CAMPAIGNS: Campaign[] = [
       },
       supporterGuide: {
         title: 'Guia para Apoiadores',
-        whatToSay: [
-            '“Estou aqui para te dar uma força, seja para ir ao médico ou só para conversar.” (Oferece apoio prático e emocional)',
-            '“Cuidar da saúde é um ato de coragem. Admiro você por isso.” (Reforça a masculinidade de forma positiva)',
-            '“Sua saúde é importante para mim e para todos que te amam.” (Mostra o impacto positivo do autocuidado)',
-            '“Não precisa passar por isso sozinho. Conte comigo.” (Cria um ambiente de confiança)',
-            '“Vamos marcar nossos exames juntos?” (Normaliza a prevenção e cria um pacto de cuidado mútuo)',
-        ],
-        whatToAvoid: [
-            '“Isso é frescura” ou “Exame de toque é coisa de...” (Usa preconceito e desincentiva o cuidado)',
-            '“Homem de verdade não fica doente.” (Reforça estereótipos tóxicos e perigosos)',
-            'Pressionar ou fazer piadas sobre os exames preventivos. (Cria constrangimento e resistência)',
-            '“Se você não se cuidar, vai acabar mal.” (Usa o medo como motivador, o que pode causar o efeito contrário)',
-            'Ignorar o assunto ou fingir que não é importante. (A omissão também é uma forma de desincentivo)',
+        scenarios: [
+            {
+                scenario: "Seu pai tem mais de 50 anos e se recusa a ir ao urologista, dizendo que 'não precisa disso'. Como você o incentiva?",
+                goodResponse: {
+                    text: "“Pai, sua saúde é muito importante para nós. Cuidar de si mesmo é um ato de coragem. Que tal marcarmos um check-up juntos?”",
+                    explanation: "Associa o cuidado à masculinidade positiva (coragem), mostra o impacto dele na família e normaliza a prevenção ao sugerir ir junto."
+                },
+                badResponse: {
+                    text: "“Deixa de ser teimoso! Se você não for, vai acabar doente e vai ser pior.”",
+                    explanation: "Usa um tom de confronto e apela para o medo, o que pode aumentar a resistência e criar um clima negativo."
+                }
+            },
+            {
+                scenario: "Um amigo está ansioso com o resultado do exame de PSA. O que é melhor dizer?",
+                goodResponse: {
+                    text: "“É normal se sentir assim. Independentemente do resultado, estou aqui com você para dar uma força.”",
+                    explanation: "Valida a ansiedade dele, oferece apoio incondicional e mostra que sua amizade não depende do diagnóstico."
+                },
+                badResponse: {
+                    text: "“Relaxa, cara. Isso não deve ser nada. Exame de próstata é besteira.”",
+                    explanation: "Minimiza uma preocupação legítima e reforça o estigma de que a saúde masculina é um assunto trivial, desincentivando o cuidado."
+                }
+            },
+            {
+                scenario: "Um familiar está em tratamento e se queixa dos efeitos colaterais. Como você oferece suporte?",
+                goodResponse: {
+                    text: "“Imagino que seja difícil. Tem algo que eu possa fazer para te ajudar hoje? Uma comida, uma companhia para ver um filme?”",
+                    explanation: "Reconhece a dificuldade dele, não tenta 'consertar' o problema, e oferece ajuda prática e específica, tornando o apoio mais tangível."
+                },
+                badResponse: {
+                    text: "“Pelo menos você está se tratando, né? Tem que ser forte e aguentar.”",
+                    explanation: "Invalida o sofrimento atual dele com uma positividade tóxica, pressionando-o a suprimir seus sentimentos em vez de compartilhá-los."
+                }
+            }
         ]
       },
       help: {

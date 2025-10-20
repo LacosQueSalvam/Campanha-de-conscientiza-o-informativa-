@@ -1,6 +1,8 @@
 import React, { useState, useEffect, useRef } from 'react';
 import { Campaign, Quiz as QuizType, MythOrTruth } from '../types';
 import HelpModal from './HelpModal';
+import Footer from './Footer';
+import SupporterScenario from './SupporterScenario';
 
 // --- CUSTOM HOOK for Media Query ---
 const useMediaQuery = (query: string) => {
@@ -777,30 +779,7 @@ const CampaignPage: React.FC<{ campaign: Campaign; onBack: () => void; campaigns
         id: 'supporterGuide',
         title: 'Apoiadores',
         icon: <SupportersIcon />,
-        content: (
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-x-8 gap-y-10">
-                {/* What to Say Column */}
-                <div className="space-y-4">
-                    <h4 className="text-2xl font-bold text-green-400 text-center md:text-left">O que dizer</h4>
-                    {details.supporterGuide.whatToSay.map((item, index) => (
-                        <div key={index} className="p-4 bg-white/5 rounded-lg flex items-start gap-4 text-left">
-                            <CheckCircleIcon color="#4ade80" />
-                            <span className="opacity-90 flex-1">{item}</span>
-                        </div>
-                    ))}
-                </div>
-                {/* What to Avoid Column */}
-                <div className="space-y-4">
-                    <h4 className="text-2xl font-bold text-red-400 text-center md:text-left">O que evitar</h4>
-                    {details.supporterGuide.whatToAvoid.map((item, index) => (
-                        <div key={index} className="p-4 bg-white/5 rounded-lg flex items-start gap-4 text-left">
-                             <XCircleIcon color="#f87171" />
-                            <span className="opacity-90 flex-1">{item}</span>
-                        </div>
-                    ))}
-                </div>
-            </div>
-        )
+        content: <SupporterScenario guide={details.supporterGuide} accentColor={accentColor} />,
     };
     slides.splice(3, 0, supporterSlide);
   }
@@ -964,7 +943,7 @@ const CampaignPage: React.FC<{ campaign: Campaign; onBack: () => void; campaigns
                                         className={`custom-scrollbar w-full h-full p-6 sm:p-8 lg:p-12 pb-12 overflow-y-auto flex flex-col transition-opacity duration-500 ease-out ${
                                             index === currentIndex ? 'opacity-100 delay-300' : 'opacity-0'
                                         } ${
-                                            slide.id === 'quiz' || slide.id === 'myths' ? 'justify-start' : 'justify-center'
+                                            slide.id === 'quiz' || slide.id === 'myths' || slide.id === 'supporterGuide' ? 'justify-start' : 'justify-center'
                                         }`}
                                     >
                                         <section className="text-center w-full">
@@ -985,6 +964,7 @@ const CampaignPage: React.FC<{ campaign: Campaign; onBack: () => void; campaigns
                     </div>
                 </div>
             </main>
+            <Footer activeCampaign={campaign} />
         </div>
     </>
   );

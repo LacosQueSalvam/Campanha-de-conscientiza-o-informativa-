@@ -23,10 +23,22 @@ export interface MythsVsTruths {
   source?: { name: string; url: string };
 }
 
+export interface Scenario {
+  scenario: string;
+  goodResponse: {
+    text: string;
+    explanation: string;
+  };
+  badResponse: {
+    text: string;
+    explanation: string;
+  };
+}
+
+
 export interface SupporterGuide {
   title: string;
-  whatToSay: string[];
-  whatToAvoid: string[];
+  scenarios: Scenario[];
 }
 
 export interface RiskFactors {
