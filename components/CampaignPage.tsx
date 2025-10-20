@@ -1,7 +1,6 @@
 import React, { useState, useEffect, useRef } from 'react';
 import { Campaign, Quiz as QuizType, MythOrTruth } from '../types';
 import HelpModal from './HelpModal';
-import Footer from './Footer';
 import SupporterScenario from './SupporterScenario';
 
 // --- CUSTOM HOOK for Media Query ---
@@ -964,7 +963,6 @@ const CampaignPage: React.FC<{ campaign: Campaign; onBack: () => void; campaigns
                     </div>
                 </div>
             </main>
-            <Footer activeCampaign={campaign} />
         </div>
     </>
   );

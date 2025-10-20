@@ -78,7 +78,7 @@ const SupporterScenario: React.FC<SupporterScenarioProps> = ({ guide, accentColo
                 Cenário {currentIndex + 1} de {shuffledScenarios.length}
             </p>
 
-            <div className="p-6 md:p-8 bg-black/20 rounded-2xl border border-white/10 text-center">
+            <div className="p-6 md:p-8 bg-black/20 rounded-2xl border border-white/10 text-center flex items-center justify-center min-h-[12rem] md:min-h-[14rem]">
                 <blockquote className="text-xl md:text-2xl font-semibold italic text-white/90 border-l-4 pl-4" style={{borderColor: accentColor}}>
                     "{currentScenario.scenario}"
                 </blockquote>

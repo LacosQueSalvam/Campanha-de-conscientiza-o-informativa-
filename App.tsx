@@ -8,7 +8,6 @@ import { CAMPAIGNS } from './constants';
 import { Campaign } from './types';
 import BackgroundEffects from './components/BackgroundEffects';
 import CreatorsPage from './components/CreatorsPage';
-import Footer from './components/Footer';
 import StoriesPage from './components/StoriesPage';
 
 function App() {
@@ -87,7 +86,6 @@ function App() {
             onShowcaseSelect={setSelectedCampaign}
           />
         </main>
-        <Footer activeCampaign={activeCampaign} />
       </div>
 
       {selectedCampaign && (
