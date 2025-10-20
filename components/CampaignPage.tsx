@@ -943,26 +943,27 @@ const CampaignPage: React.FC<{ campaign: Campaign; onBack: () => void; campaigns
                 </aside>
 
                 {/* --- Main Content Slider --- */}
-                <div className="flex-grow relative">
+                <div className="flex-grow relative overflow-hidden">
                     <div className="w-full h-full relative">
                         {slides.map((slide, index) => {
                             const offset = index - currentIndex;
                             const zIndex = slides.length - Math.abs(offset);
-                            const opacity = offset === 0 ? 1 : 0;
 
                             return (
                                 <div
                                     key={slide.id}
-                                    className={`absolute top-0 left-0 w-full h-full bg-black/30 backdrop-blur-2xl rounded-3xl shadow-2xl border border-white/10 text-white flex flex-col transition-opacity duration-700 ease-out ${opacity === 1 ? 'pointer-events-auto' : 'pointer-events-none'}`}
+                                    className={`absolute top-0 left-0 w-full h-full bg-black/30 backdrop-blur-2xl rounded-3xl shadow-2xl border border-white/10 text-white flex flex-col transition-transform duration-700 ease-[cubic-bezier(0.4,0,0.2,1)]`}
                                     style={{
-                                        opacity,
+                                        transform: `translateX(${offset * 100}%)`,
                                         zIndex,
                                         boxShadow: offset === 0 ? `0 0 30px ${hexToRgba(accentColor, 0.3)}` : 'none',
                                     }}
                                 >
                                     <div 
                                         ref={index === currentIndex ? contentRef : null} 
-                                        className={`custom-scrollbar w-full h-full p-6 sm:p-8 lg:p-12 pb-12 overflow-y-auto flex flex-col ${
+                                        className={`custom-scrollbar w-full h-full p-6 sm:p-8 lg:p-12 pb-12 overflow-y-auto flex flex-col transition-opacity duration-500 ease-out ${
+                                            index === currentIndex ? 'opacity-100 delay-300' : 'opacity-0'
+                                        } ${
                                             slide.id === 'quiz' || slide.id === 'myths' ? 'justify-start' : 'justify-center'
                                         }`}
                                     >

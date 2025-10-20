@@ -8,11 +8,13 @@ import HelpModal from './components/HelpModal';
 import { CAMPAIGNS } from './constants';
 import { Campaign } from './types';
 import BackgroundEffects from './components/BackgroundEffects';
+import CreatorsPage from './components/CreatorsPage';
 
 function App() {
   const [carouselIndex, setCarouselIndex] = useState<number>(0);
   const [selectedCampaign, setSelectedCampaign] = useState<Campaign | null>(null);
   const [viewingCampaign, setViewingCampaign] = useState<Campaign | null>(null);
+  const [viewingCreators, setViewingCreators] = useState(false);
   const [isHelpModalOpen, setIsHelpModalOpen] = useState(false);
   const activeCampaign = CAMPAIGNS[carouselIndex];
   
@@ -31,10 +33,15 @@ function App() {
   
   const handleBackToHome = () => {
     setViewingCampaign(null);
+    setViewingCreators(false);
   }
 
   if (viewingCampaign) {
     return <CampaignPage campaign={viewingCampaign} onBack={handleBackToHome} campaigns={CAMPAIGNS} />
+  }
+
+  if (viewingCreators) {
+    return <CreatorsPage onBack={handleBackToHome} activeCampaign={activeCampaign} />
   }
 
   return (
@@ -62,6 +69,7 @@ function App() {
           activeIndex={carouselIndex}
           setActiveIndex={setCarouselIndex}
           onHelpClick={() => setIsHelpModalOpen(true)}
+          onCreatorsClick={() => setViewingCreators(true)}
         />
         <main>
           <Carousel
