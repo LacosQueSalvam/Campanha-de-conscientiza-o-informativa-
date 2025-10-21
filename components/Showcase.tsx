@@ -19,7 +19,7 @@ const Showcase: React.FC<ShowcaseProps> = ({ campaign, onClose, onNavigate }) =>
       <div
         className="relative bg-gray-800 text-white rounded-lg shadow-2xl max-w-4xl w-full m-4 overflow-hidden animate-slide-up border border-white/10"
         onClick={(e) => e.stopPropagation()} // Prevent closing when clicking inside the modal
-        style={{boxShadow: `0 0 25px ${campaign.colors.neon}`}}
+        style={{boxShadow: `0 0 25px ${campaign.colors.neon}`, willChange: 'transform, opacity'}}
       >
         <button
           onClick={onClose}

@@ -71,7 +71,7 @@ const BackgroundEffects: React.FC<BackgroundEffectsProps> = ({ activeCampaign })
 
     const initParticles = () => {
         particlesRef.current = [];
-        const numberOfParticles = Math.floor((canvas.width * canvas.height) / 15000);
+        const numberOfParticles = Math.floor((canvas.width * canvas.height) / 25000);
         for (let i = 0; i < numberOfParticles; i++) {
             particlesRef.current.push(new Particle(canvas));
         }

@@ -608,6 +608,7 @@ const hexToRgba = (hex: string, alpha: number) => {
 const CampaignPage: React.FC<{ campaign: Campaign; onBack: () => void; campaigns: Campaign[] }> = ({ campaign, onBack }) => {
   const [currentIndex, setCurrentIndex] = useState(0);
   const [randomTip, setRandomTip] = useState('');
+  const [isExiting, setIsExiting] = useState(false);
   const contentRef = useRef<HTMLDivElement>(null);
   const { details, colors } = campaign;
   const accentColor = colors.neon;
@@ -615,6 +616,11 @@ const CampaignPage: React.FC<{ campaign: Campaign; onBack: () => void; campaigns
 
   const isMobile = useMediaQuery('(max-width: 767px)');
   const [indicatorStyle, setIndicatorStyle] = useState({});
+
+  const handleBack = () => {
+    setIsExiting(true);
+    setTimeout(onBack, 500); // Match animation duration
+  };
 
   const handleContentScroll = () => {
     setTimeout(() => {
@@ -839,6 +845,13 @@ const CampaignPage: React.FC<{ campaign: Campaign; onBack: () => void; campaigns
                 .animate-fade-in-up {
                     animation: fade-in-up 0.6s ease-out forwards;
                 }
+                @keyframes fade-out-down {
+                  from { opacity: 1; transform: translateY(0); }
+                  to { opacity: 0; transform: translateY(20px); }
+                }
+                .animate-fade-out-down {
+                  animation: fade-out-down 0.5s ease-out forwards;
+                }
                 @keyframes fade-in-up-sm {
                 0% { opacity: 0; transform: translateY(10px); }
                 100% { opacity: 1; transform: translateY(0); }
@@ -865,7 +878,7 @@ const CampaignPage: React.FC<{ campaign: Campaign; onBack: () => void; campaigns
                 />
                 <div className="flex items-center gap-4">
                     <button
-                        onClick={onBack}
+                        onClick={handleBack}
                         className={`inline-flex items-center px-6 py-2 rounded-full font-bold shadow-md transition-all transform hover:scale-105 hover:shadow-lg focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-offset-gray-900 ${colors.accent} ${colors.accentHover} ${colors.ring} text-gray-900`}
                         style={{boxShadow: `0 0 15px ${colors.neonGlow}`}}
                     >
@@ -877,7 +890,7 @@ const CampaignPage: React.FC<{ campaign: Campaign; onBack: () => void; campaigns
             </div>
         </header>
         
-            <main className="flex-grow flex flex-col md:flex-row items-stretch p-4 md:p-8 overflow-hidden animate-fade-in-up gap-4 md:gap-8">
+            <main className={`flex-grow flex flex-col md:flex-row items-stretch p-4 md:p-8 overflow-hidden gap-4 md:gap-8 ${isExiting ? 'animate-fade-out-down' : 'animate-fade-in-up'}`}>
                 {/* --- Responsive Navigation --- */}
                 <aside className="w-full md:w-[16%] md:min-w-[240px] flex-shrink-0 bg-black/20 rounded-2xl p-2 md:p-4">
                     <div ref={navContainerRef} className="relative flex flex-row md:flex-col gap-1 h-full overflow-x-auto md:overflow-x-hidden custom-scrollbar">
@@ -935,6 +948,7 @@ const CampaignPage: React.FC<{ campaign: Campaign; onBack: () => void; campaigns
                                         transform: `translateY(${offset * 100}%)`,
                                         zIndex,
                                         boxShadow: offset === 0 ? `0 0 30px ${hexToRgba(accentColor, 0.3)}` : 'none',
+                                        willChange: 'transform',
                                     }}
                                 >
                                     <div 

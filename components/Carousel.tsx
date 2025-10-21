@@ -84,6 +84,7 @@ const Carousel: React.FC<CarouselProps> = ({ campaigns, activeIndex, setActiveIn
                 className={`absolute inset-0 flex flex-col justify-center transition-opacity duration-1000 ease-out
                 ${ textPos === 'left' ? 'items-start text-left pl-6 sm:pl-8 md:pl-16 lg:pl-32' : 'items-center text-center' }
                 ${ index === activeIndex ? 'opacity-100' : 'opacity-0 pointer-events-none' }`}
+                style={{ willChange: 'opacity, transform' }}
               >
                 {/* --- Dynamic Background Glow --- */}
                 <div 

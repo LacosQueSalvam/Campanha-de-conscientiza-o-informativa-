@@ -21,14 +21,29 @@ interface StoriesPageProps {
   activeCampaign: Campaign;
 }
 
-const StoryCard: React.FC<{ story: Story; campaign: Campaign | undefined }> = ({ story, campaign }) => {
+interface StoryCardProps {
+  story: Story;
+  campaign: Campaign | undefined;
+  onDelete: (storyId: number) => void;
+}
+
+const StoryCard: React.FC<StoryCardProps> = ({ story, campaign, onDelete }) => {
     if (!campaign) return null;
 
     return (
         <div 
-            className="bg-black/20 p-6 rounded-2xl border-l-4 flex flex-col gap-4 transition-all duration-300 hover:bg-black/40 hover:scale-[1.02]"
+            className="group relative bg-black/20 p-6 rounded-2xl border-l-4 flex flex-col gap-4 transition-all duration-300 hover:bg-black/40 hover:scale-[1.02]"
             style={{ borderColor: campaign.colors.neon }}
         >
+             <button
+                onClick={() => onDelete(story.id)}
+                className="absolute top-2 right-2 p-1.5 rounded-full bg-black/30 text-white/50 hover:text-white hover:bg-red-500/50 transition-all opacity-0 group-hover:opacity-100 focus:opacity-100 focus:outline-none z-10"
+                aria-label="Remover história"
+            >
+                <svg xmlns="http://www.w3.org/2000/svg" className="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={3}>
+                    <path strokeLinecap="round" strokeLinejoin="round" d="M6 18L18 6M6 6l12 12" />
+                </svg>
+            </button>
             <p className="text-white/80 italic leading-relaxed">"{story.text}"</p>
             <p className="mt-auto text-right font-bold" style={{color: campaign.colors.neonGlow}}>- {story.author}</p>
         </div>
@@ -40,20 +55,43 @@ const StoriesPage: React.FC<StoriesPageProps> = ({ onBack, campaigns, activeCamp
   const [filter, setFilter] = useState<string>('all');
   const [formVisible, setFormVisible] = useState(false);
   const [formSubmitted, setFormSubmitted] = useState(false);
+  const [isExiting, setIsExiting] = useState(false);
 
-  const [newStory, setNewStory] = useState({ author: '', text: '', campaignId: 'setembro-amarelo' as const });
+  const [newStory, setNewStory] = useState({ author: '', text: '', campaignId: activeCampaign.id as 'setembro-amarelo' | 'outubro-rosa' | 'novembro-azul' });
   
   const filteredStories = filter === 'all' ? stories : stories.filter(s => s.campaignId === filter);
   
   const handleFormSubmit = (e: React.FormEvent) => {
     e.preventDefault();
-    // In a real app, this would send data to a server.
-    // Here, we'll just show a thank you message.
+    if (!newStory.text.trim()) {
+      alert("Por favor, escreva sua história antes de enviar.");
+      return;
+    }
+    const storyToAdd: Story = {
+        id: Date.now(),
+        campaignId: newStory.campaignId,
+        author: newStory.author.trim() || 'Anônimo',
+        text: newStory.text.trim(),
+    };
+    setStories(prevStories => [storyToAdd, ...prevStories]);
     setFormSubmitted(true);
     setFormVisible(false);
-    setNewStory({ author: '', text: '', campaignId: 'setembro-amarelo' });
+    setNewStory({ author: '', text: '', campaignId: activeCampaign.id as any });
      setTimeout(() => setFormSubmitted(false), 5000); // Hide message after 5 seconds
   };
+  
+  const handleDeleteStory = (storyId: number) => {
+      if (window.confirm('Tem certeza que deseja remover esta história? Esta ação não pode ser desfeita.')) {
+          setStories(prevStories => prevStories.filter(story => story.id !== storyId));
+      }
+  };
+
+  const handleBack = () => {
+    setIsExiting(true);
+    setTimeout(onBack, 500); // Match animation duration
+  };
+
+  const selectedCampaignForForm = campaigns.find(c => c.id === newStory.campaignId) || activeCampaign;
 
   return (
     <div className="relative min-h-screen w-full bg-gray-900 text-white font-sans overflow-hidden flex flex-col">
@@ -66,12 +104,36 @@ const StoriesPage: React.FC<StoriesPageProps> = ({ onBack, campaigns, activeCamp
             .animate-fade-in-up {
                 animation: fade-in-up 0.6s ease-out forwards;
             }
+            @keyframes fade-out-down {
+                from { opacity: 1; transform: translateY(0); }
+                to { opacity: 0; transform: translateY(20px); }
+            }
+            .animate-fade-out-down {
+                animation: fade-out-down 0.5s ease-out forwards;
+            }
             .custom-scrollbar {
               scrollbar-width: none; /* Firefox */
               -ms-overflow-style: none;  /* Internet Explorer 10+ */
             }
             .custom-scrollbar::-webkit-scrollbar {
               display: none; /* Safari and Chrome */
+            }
+            .form-input {
+                background-color: #1f2937; /* Equivalent to bg-gray-800 */
+                color: #f9fafb; /* Equivalent to text-gray-50 */
+                border: 1px solid #4b5563; /* Equivalent to border-gray-600 */
+            }
+            .form-input:focus {
+                --tw-ring-opacity: 1;
+                border-color: var(--tw-ring-color);
+            }
+            .form-input::placeholder {
+                color: #9ca3af; /* Equivalent to placeholder-gray-400 */
+            }
+            /* Style for select dropdown options */
+            select.form-input option {
+                background: #1f2937;
+                color: white;
             }
         `}
       </style>
@@ -81,7 +143,7 @@ const StoriesPage: React.FC<StoriesPageProps> = ({ onBack, campaigns, activeCamp
       </div>
       <div className="absolute inset-0 bg-black/60 z-1"></div>
       
-      <div className="relative z-10 flex flex-col h-screen">
+      <div className={`relative z-10 flex flex-col h-screen ${isExiting ? 'animate-fade-out-down' : ''}`}>
         <header className="w-full z-20 flex-shrink-0 bg-gradient-to-b from-black/70 to-transparent">
             <div className="container mx-auto px-4 sm:px-6 lg:px-8">
                 <div className="flex items-center justify-between h-20">
@@ -91,7 +153,7 @@ const StoriesPage: React.FC<StoriesPageProps> = ({ onBack, campaigns, activeCamp
                         className="h-10 w-auto opacity-80" 
                     />
                     <button
-                        onClick={onBack}
+                        onClick={handleBack}
                         className={`inline-flex items-center px-6 py-2 rounded-full font-bold shadow-md transition-all transform hover:scale-105 hover:shadow-lg focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-offset-gray-900 ${activeCampaign.colors.accent} ${activeCampaign.colors.accentHover} ${activeCampaign.colors.ring} text-gray-900`}
                         style={{boxShadow: `0 0 15px ${activeCampaign.colors.neonGlow}`}}
                     >
@@ -171,8 +233,8 @@ const StoriesPage: React.FC<StoriesPageProps> = ({ onBack, campaigns, activeCamp
                                     id="campaignId" 
                                     value={newStory.campaignId}
                                     onChange={(e) => setNewStory({...newStory, campaignId: e.target.value as any})}
-                                    className="w-full bg-white/10 p-3 rounded-md border border-white/20 focus:ring-2 focus:outline-none"
-                                    style={{'--tw-ring-color': activeCampaign.colors.neon} as React.CSSProperties}
+                                    className="w-full p-3 rounded-md focus:ring-2 focus:outline-none form-input"
+                                    style={{'--tw-ring-color': selectedCampaignForForm.colors.neon} as React.CSSProperties}
                                 >
                                     {campaigns.map(c => <option key={c.id} value={c.id}>{c.title}</option>)}
                                 </select>
@@ -186,8 +248,8 @@ const StoriesPage: React.FC<StoriesPageProps> = ({ onBack, campaigns, activeCamp
                                     onChange={(e) => setNewStory({...newStory, text: e.target.value})}
                                     required
                                     placeholder="Escreva aqui..."
-                                    className="w-full bg-white/10 p-3 rounded-md border border-white/20 focus:ring-2 focus:outline-none"
-                                    style={{'--tw-ring-color': activeCampaign.colors.neon} as React.CSSProperties}
+                                    className="w-full p-3 rounded-md focus:ring-2 focus:outline-none form-input"
+                                    style={{'--tw-ring-color': selectedCampaignForForm.colors.neon} as React.CSSProperties}
                                 ></textarea>
                             </div>
                              <div>
@@ -198,13 +260,22 @@ const StoriesPage: React.FC<StoriesPageProps> = ({ onBack, campaigns, activeCamp
                                     value={newStory.author}
                                     onChange={(e) => setNewStory({...newStory, author: e.target.value})}
                                     placeholder="Anônimo"
-                                    className="w-full bg-white/10 p-3 rounded-md border border-white/20 focus:ring-2 focus:outline-none"
-                                    style={{'--tw-ring-color': activeCampaign.colors.neon} as React.CSSProperties}
+                                    className="w-full p-3 rounded-md focus:ring-2 focus:outline-none form-input"
+                                    style={{'--tw-ring-color': selectedCampaignForForm.colors.neon} as React.CSSProperties}
                                 />
                             </div>
                             <div className="flex items-center justify-end gap-4 pt-4">
                                 <button type="button" onClick={() => setFormVisible(false)} className="px-6 py-2 rounded-full font-semibold bg-gray-600 hover:bg-gray-500 transition-colors">Cancelar</button>
-                                <button type="submit" className="px-8 py-2 rounded-full font-bold text-gray-900 transition-transform hover:scale-105 shadow-lg" style={{backgroundColor: activeCampaign.colors.accent}}>Enviar</button>
+                                <button 
+                                  type="submit" 
+                                  className="px-8 py-2 rounded-full font-bold text-gray-900 transition-transform hover:scale-105 shadow-lg" 
+                                  style={{
+                                      backgroundColor: selectedCampaignForForm.colors.neon,
+                                      boxShadow: `0 0 15px ${selectedCampaignForForm.colors.neonGlow}`
+                                  }}
+                                >
+                                    Enviar
+                                </button>
                             </div>
                          </form>
                     </div>
@@ -212,7 +283,12 @@ const StoriesPage: React.FC<StoriesPageProps> = ({ onBack, campaigns, activeCamp
                 
                 <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 text-left animate-fade-in-up">
                     {filteredStories.map(story => (
-                        <StoryCard key={story.id} story={story} campaign={campaigns.find(c => c.id === story.campaignId)} />
+                        <StoryCard 
+                            key={story.id} 
+                            story={story} 
+                            campaign={campaigns.find(c => c.id === story.campaignId)}
+                            onDelete={handleDeleteStory}
+                        />
                     ))}
                 </div>
             </div>

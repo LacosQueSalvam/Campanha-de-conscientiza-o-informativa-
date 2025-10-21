@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { Campaign } from '../types';
 import BackgroundEffects from './BackgroundEffects';
 
@@ -21,11 +21,31 @@ interface CreatorsPageProps {
 
 const CreatorsPage: React.FC<CreatorsPageProps> = ({ onBack, activeCampaign }) => {
   const { colors } = activeCampaign;
+  const [isExiting, setIsExiting] = useState(false);
+
+  const handleBack = () => {
+    setIsExiting(true);
+    setTimeout(onBack, 500); // Match animation duration
+  };
 
   return (
     <div className="relative min-h-screen w-full bg-gray-900 text-white font-sans overflow-hidden flex flex-col">
         <style>
         {`
+            @keyframes fade-in {
+                from { opacity: 0; }
+                to { opacity: 1; }
+            }
+            .animate-fade-in {
+                animation: fade-in 0.6s ease-out forwards;
+            }
+            @keyframes fade-out-down {
+                from { opacity: 1; transform: translateY(0); }
+                to { opacity: 0; transform: translateY(20px); }
+            }
+            .animate-fade-out-down {
+                animation: fade-out-down 0.5s ease-out forwards;
+            }
             @keyframes fade-in-up-delay {
                 0% { opacity: 0; transform: translateY(20px); }
                 100% { opacity: 1; transform: translateY(0); }
@@ -41,7 +61,7 @@ const CreatorsPage: React.FC<CreatorsPageProps> = ({ onBack, activeCampaign }) =
       </div>
       <div className="absolute inset-0 bg-black/60 z-1"></div>
       
-      <div className="relative z-10 flex flex-col h-screen">
+      <div className={`relative z-10 flex flex-col h-screen ${isExiting ? 'animate-fade-out-down' : 'animate-fade-in'}`}>
         <header className="w-full z-20 flex-shrink-0 bg-gradient-to-b from-black/70 to-transparent">
             <div className="container mx-auto px-4 sm:px-6 lg:px-8">
                 <div className="flex items-center justify-between h-20">
@@ -51,7 +71,7 @@ const CreatorsPage: React.FC<CreatorsPageProps> = ({ onBack, activeCampaign }) =
                         className="h-10 w-auto opacity-80" 
                     />
                     <button
-                        onClick={onBack}
+                        onClick={handleBack}
                         className={`inline-flex items-center px-6 py-2 rounded-full font-bold shadow-md transition-all transform hover:scale-105 hover:shadow-lg focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-offset-gray-900 ${colors.accent} ${colors.accentHover} ${colors.ring} text-gray-900`}
                         style={{boxShadow: `0 0 15px ${colors.neonGlow}`}}
                     >
