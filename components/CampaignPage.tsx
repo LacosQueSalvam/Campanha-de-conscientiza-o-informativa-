@@ -436,11 +436,11 @@ const MythsVsTruthsSection: React.FC<{ items: MythOrTruth[], source?: {name: str
             </div>
 
             {/* The Card */}
-            <div className="w-full h-80 [perspective:1000px]">
+            <div className="w-full h-72 md:h-80 [perspective:1000px]">
                 <div className={`relative h-full w-full rounded-xl shadow-xl transition-all duration-700 [transform-style:preserve-3d] ${isAnswered ? '[transform:rotateY(180deg)]' : ''}`}>
                     {/* Front */}
                     <div className="absolute inset-0 bg-white/5 rounded-xl p-6 flex flex-col items-center justify-center text-center [backface-visibility:hidden]">
-                        <p className="text-2xl font-bold">{currentItem.topic}</p>
+                        <p className="text-xl md:text-2xl font-bold">{currentItem.topic}</p>
                     </div>
                     {/* Back */}
                     <div className="absolute inset-0 bg-gray-800 rounded-xl p-6 flex flex-col items-center justify-center text-center [transform:rotateY(180deg)] [backface-visibility:hidden]">
@@ -929,7 +929,7 @@ const CampaignPage: React.FC<{ campaign: Campaign; onBack: () => void; campaigns
             </div>
         </header>
         
-            <main className={`flex-grow flex flex-col md:flex-row items-stretch p-4 md:p-8 overflow-hidden gap-4 md:gap-8 ${isExiting ? 'animate-fade-out-down' : 'animate-fade-in-up'}`}>
+            <main className={`flex-grow flex flex-col md:flex-row items-stretch p-2 sm:p-4 md:p-8 gap-2 sm:gap-4 md:gap-8 ${isExiting ? 'animate-fade-out-down' : 'animate-fade-in-up'}`}>
                 {/* --- Responsive Navigation --- */}
                 <aside className="w-full md:w-[16%] md:min-w-[240px] flex-shrink-0 bg-black/20 rounded-2xl p-2 md:p-4">
                     <div ref={navContainerRef} className="relative flex flex-row md:flex-col gap-1 h-full overflow-x-auto md:overflow-x-hidden custom-scrollbar">
@@ -993,10 +993,10 @@ const CampaignPage: React.FC<{ campaign: Campaign; onBack: () => void; campaigns
                                 >
                                     <div 
                                         ref={index === currentIndex ? contentRef : null} 
-                                        className={`custom-scrollbar w-full h-full p-6 sm:p-8 lg:p-12 pb-12 overflow-y-auto flex flex-col transition-opacity duration-500 ease-out ${
+                                        className={`custom-scrollbar w-full h-full p-4 sm:p-8 lg:p-12 overflow-y-auto flex flex-col transition-opacity duration-500 ease-out ${
                                             index === currentIndex ? 'opacity-100 delay-300' : 'opacity-0'
                                         } ${
-                                            slide.id === 'quiz' || slide.id === 'mythsVsTruths' || slide.id === 'supporterGuide' ? 'justify-start' : 'justify-center'
+                                            slide.id === 'quiz' || slide.id === 'mythsVsTruths' || slide.id === 'supporterGuide' ? 'justify-start' : 'justify-start md:justify-center'
                                         }`}
                                     >
                                         <section className="text-center w-full">

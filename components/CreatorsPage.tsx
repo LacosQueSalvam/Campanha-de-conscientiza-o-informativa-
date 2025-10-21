@@ -62,7 +62,7 @@ const CreatorsPage: React.FC<CreatorsPageProps> = ({ onBack, activeCampaign }) =
       </div>
       <div className="absolute inset-0 bg-black/60 z-1"></div>
       
-      <div className={`relative z-10 flex flex-col h-screen ${isExiting ? 'animate-fade-out-down' : 'animate-fade-in'}`}>
+      <div className={`relative z-10 flex flex-col h-screen overflow-y-auto ${isExiting ? 'animate-fade-out-down' : 'animate-fade-in'}`}>
         <header className="w-full z-20 flex-shrink-0 bg-gradient-to-b from-black/70 to-transparent">
             <div className="container mx-auto px-4 sm:px-6 lg:px-8">
                 <div className="flex items-center justify-between h-20">
@@ -83,18 +83,18 @@ const CreatorsPage: React.FC<CreatorsPageProps> = ({ onBack, activeCampaign }) =
             </div>
         </header>
 
-        <main className="flex-grow flex flex-col items-center justify-center text-center p-4">
+        <main className="flex-grow flex flex-col items-center justify-start md:justify-center text-center p-4 pt-8 md:pt-4">
             <h1 
-                className="text-5xl md:text-7xl font-black uppercase"
+                className="text-4xl sm:text-5xl md:text-7xl font-black uppercase"
                 style={{ color: colors.neon, textShadow: `0 0 15px ${colors.neonGlow}` }}
             >
                 Nossa Equipe
             </h1>
-            <p className="mt-2 text-2xl font-bold text-white/80">
+            <p className="mt-2 text-xl sm:text-2xl font-bold text-white/80">
                 Turma 231
             </p>
 
-            <div className="mt-12 grid grid-cols-1 md:grid-cols-3 gap-8 md:gap-12">
+            <div className="mt-8 md:mt-12 grid grid-cols-1 md:grid-cols-3 gap-8 md:gap-12">
                 {creators.map((creator, index) => (
                     <div 
                         key={creator.name}
