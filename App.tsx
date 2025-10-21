@@ -17,6 +17,7 @@ function App() {
   const [viewingCreators, setViewingCreators] = useState(false);
   const [viewingStories, setViewingStories] = useState(false);
   const [isHelpModalOpen, setIsHelpModalOpen] = useState(false);
+  const [scrollToSection, setScrollToSection] = useState<string | null>(null);
   const activeCampaign = CAMPAIGNS[carouselIndex];
   
   useEffect(() => {
@@ -30,16 +31,26 @@ function App() {
   const handleNavigateToPage = (campaign: Campaign) => {
     setSelectedCampaign(null);
     setViewingCampaign(campaign);
+    setScrollToSection(null);
   };
   
   const handleBackToHome = () => {
     setViewingCampaign(null);
     setViewingCreators(false);
     setViewingStories(false);
+    setScrollToSection(null);
   }
+  
+  const handleNavigateFromSearch = (campaignId: string, sectionId: string) => {
+    const campaign = CAMPAIGNS.find(c => c.id === campaignId);
+    if (campaign) {
+      setViewingCampaign(campaign);
+      setScrollToSection(sectionId);
+    }
+  };
 
   if (viewingCampaign) {
-    return <CampaignPage campaign={viewingCampaign} onBack={handleBackToHome} campaigns={CAMPAIGNS} />
+    return <CampaignPage campaign={viewingCampaign} onBack={handleBackToHome} campaigns={CAMPAIGNS} scrollToSectionId={scrollToSection} />
   }
 
   if (viewingCreators) {
@@ -54,7 +65,7 @@ function App() {
     <>
       <div className="relative w-full min-h-screen bg-gray-900 overflow-hidden flex flex-col">
         {/* Background Image & Overlay */}
-        <div className="absolute inset-0 w-full h-full z-0">
+        <div className="absolute inset-0 w-full h-full z-0 overflow-hidden">
           {CAMPAIGNS.map((campaign, index) => (
             <img
               key={campaign.id}
@@ -77,6 +88,7 @@ function App() {
           onHelpClick={() => setIsHelpModalOpen(true)}
           onCreatorsClick={() => setViewingCreators(true)}
           onStoriesClick={() => setViewingStories(true)}
+          onNavigateFromSearch={handleNavigateFromSearch}
         />
         <main className="flex-grow">
           <Carousel

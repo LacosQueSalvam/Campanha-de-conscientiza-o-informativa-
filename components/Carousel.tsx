@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 import { Campaign } from '../types';
 import { AUTOPLAY_INTERVAL } from '../constants';
 import TypingEffect from './TypingEffect';
@@ -11,6 +11,7 @@ interface CarouselProps {
 }
 
 const Carousel: React.FC<CarouselProps> = ({ campaigns, activeIndex, setActiveIndex, onShowcaseSelect }) => {
+  const [parallaxStyle, setParallaxStyle] = useState({});
 
   useEffect(() => {
     const timer = setInterval(() => {
@@ -25,10 +26,33 @@ const Carousel: React.FC<CarouselProps> = ({ campaigns, activeIndex, setActiveIn
     onShowcaseSelect(campaign);
   };
   
+  const handleMouseMove = (e: React.MouseEvent<HTMLElement>) => {
+    const { clientWidth, clientHeight } = e.currentTarget;
+    const { clientX, clientY } = e;
+    const xPos = (clientX / clientWidth - 0.5) * 30; // factor determines the parallax intensity
+    const yPos = (clientY / clientHeight - 0.5) * 30;
+    
+    setParallaxStyle({
+        transform: `translateX(${xPos}px) translateY(${yPos}px) scale(1.05)`,
+        transition: 'transform 0.1s ease-out'
+    });
+  };
+
+  const handleMouseLeave = () => {
+    setParallaxStyle({
+        transform: 'translateX(0) translateY(0) scale(1.05)',
+        transition: 'transform 0.5s ease-in-out'
+    });
+  };
+  
   const activeCampaign = campaigns[activeIndex];
 
   return (
-    <section className="relative h-screen w-full flex items-center justify-center overflow-hidden pt-20">
+    <section 
+      className="relative h-screen w-full flex items-center justify-center overflow-hidden pt-20"
+      onMouseMove={handleMouseMove}
+      onMouseLeave={handleMouseLeave}
+    >
       <style>
         {`
           .neon-text-main {
@@ -67,9 +91,31 @@ const Carousel: React.FC<CarouselProps> = ({ campaigns, activeIndex, setActiveIn
             animation: progress linear forwards;
             box-shadow: 0 0 10px ${activeCampaign.colors.neon}, 0 0 5px ${activeCampaign.colors.neonGlow};
           }
+          .background-image-container img {
+             will-change: transform;
+          }
         `}
       </style>
       
+      {/* Background Image is inside a container that receives the parallax effect */}
+      <div 
+        className="absolute inset-0 w-full h-full z-0 background-image-container"
+      >
+        <div style={parallaxStyle} className="w-full h-full">
+         {campaigns.map((campaign, index) => (
+            <img
+              key={campaign.id}
+              src={campaign.image}
+              alt={`Fundo da campanha ${campaign.title}`}
+              className={`absolute inset-0 w-full h-full object-cover transition-opacity duration-1000 ease-in-out ${
+                index === activeIndex ? 'opacity-100' : 'opacity-0'
+              } ${campaign.objectPosition || 'object-center'}`}
+            />
+          ))}
+        </div>
+      </div>
+
+
       {/* Content */}
       <div className="relative z-10 text-white px-4 w-full h-full" style={{
             '--neon-color': activeCampaign.colors.neon,

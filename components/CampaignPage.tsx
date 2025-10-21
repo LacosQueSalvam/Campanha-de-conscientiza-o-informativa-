@@ -1,5 +1,6 @@
 import React, { useState, useEffect, useRef } from 'react';
-import { Campaign, Quiz as QuizType, MythOrTruth } from '../types';
+import { Campaign, Quiz as QuizType, MythOrTruth, Story } from '../types';
+import { INITIAL_STORIES } from '../data/stories';
 import HelpModal from './HelpModal';
 import SupporterScenario from './SupporterScenario';
 
@@ -70,9 +71,9 @@ const LightbulbIcon = () => (
     </svg>
 );
 
-const SupportersIcon = () => (
-    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
-        <path strokeLinecap="round" strokeLinejoin="round" d="M12 4.354a4 4 0 110 5.292M15 21H3v-1a6 6 0 0112 0v1zm0 0h6v-1a6 6 0 00-9-5.197M15 21v-1a6 6 0 00-1.78-4.125M15 15a3 3 0 11-6 0 3 3 0 016 0z" />
+const SupporterGuideIcon = () => (
+    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={2} stroke="currentColor">
+      <path strokeLinecap="round" strokeLinejoin="round" d="M18.364 5.636l-3.536 3.536m0 5.656l3.536 3.536M9.172 9.172L5.636 5.636m3.536 9.192l-3.536 3.536M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
     </svg>
 );
 
@@ -97,6 +98,12 @@ const MythsIcon = () => (
 const ShareIcon = () => (
     <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
         <path strokeLinecap="round" strokeLinejoin="round" d="M8.684 13.342C8.886 12.938 9 12.482 9 12s-.114-.938-.316-1.342m0 2.684a3 3 0 110-2.684m0 2.684l6.632 3.316m-6.632-6.002l6.632-3.316m0 0a3 3 0 105.367-2.684 3 3 0 00-5.367 2.684zm0 9.368a3 3 0 105.367 2.684 3 3 0 00-5.367 2.684z" />
+    </svg>
+);
+
+const QuillIcon = () => (
+    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
+      <path strokeLinecap="round" strokeLinejoin="round" d="M15.232 5.232l3.536 3.536m-2.036-5.036a2.5 2.5 0 113.536 3.536L6.5 21.036H3v-3.572L16.732 3.732z" />
     </svg>
 );
 
@@ -605,9 +612,10 @@ const hexToRgba = (hex: string, alpha: number) => {
 };
 
 // --- MAIN PAGE COMPONENT ---
-const CampaignPage: React.FC<{ campaign: Campaign; onBack: () => void; campaigns: Campaign[] }> = ({ campaign, onBack }) => {
+const CampaignPage: React.FC<{ campaign: Campaign; onBack: () => void; campaigns: Campaign[]; scrollToSectionId: string | null; }> = ({ campaign, onBack, campaigns, scrollToSectionId }) => {
   const [currentIndex, setCurrentIndex] = useState(0);
   const [randomTip, setRandomTip] = useState('');
+  const [featuredStory, setFeaturedStory] = useState<Story | null>(null);
   const [isExiting, setIsExiting] = useState(false);
   const contentRef = useRef<HTMLDivElement>(null);
   const { details, colors } = campaign;
@@ -638,7 +646,12 @@ const CampaignPage: React.FC<{ campaign: Campaign; onBack: () => void; campaigns
         const tip = details.tips.items[Math.floor(Math.random() * details.tips.items.length)];
         setRandomTip(tip);
     }
-  }, [details.tips]);
+    const relevantStories = INITIAL_STORIES.filter(story => story.campaignId === campaign.id);
+    if (relevantStories.length > 0) {
+        const story = relevantStories[Math.floor(Math.random() * relevantStories.length)];
+        setFeaturedStory(story);
+    }
+  }, [details.tips, campaign.id]);
 
   const baseSlides = [
     { id: 'symptoms', title: 'Sinais', icon: <AlertIcon/>, content: (
@@ -714,7 +727,7 @@ const CampaignPage: React.FC<{ campaign: Campaign; onBack: () => void; campaigns
         <Quiz quiz={details.quiz} accentColor={accentColor} glowColor={colors.neonGlow} onAnswer={handleContentScroll} />
       </div>
     )},
-    { id: 'myths', title: 'Mitos', icon: <MythsIcon />, content: (
+    { id: 'mythsVsTruths', title: 'Mitos', icon: <MythsIcon />, content: (
       <MythsVsTruthsSection items={details.mythsVsTruths.items} source={details.mythsVsTruths.source} accentColor={accentColor} onAnswer={handleContentScroll} />
     )},
     { id: 'share', title: 'Compartilhe', icon: <ShareIcon />, content: (
@@ -783,7 +796,7 @@ const CampaignPage: React.FC<{ campaign: Campaign; onBack: () => void; campaigns
     const supporterSlide = {
         id: 'supporterGuide',
         title: 'Apoiadores',
-        icon: <SupportersIcon />,
+        icon: <SupporterGuideIcon />,
         content: <SupporterScenario guide={details.supporterGuide} accentColor={accentColor} />,
     };
     slides.splice(3, 0, supporterSlide);
@@ -791,7 +804,7 @@ const CampaignPage: React.FC<{ campaign: Campaign; onBack: () => void; campaigns
 
   if (details.tips && randomTip) {
       const tipSlide = {
-          id: 'tip',
+          id: 'tips',
           title: 'Dica',
           icon: <LightbulbIcon />,
           content: (
@@ -802,7 +815,24 @@ const CampaignPage: React.FC<{ campaign: Campaign; onBack: () => void; campaigns
               </div>
           )
       };
-      slides.splice(4, 0, tipSlide); // Insert tip slide after supporter guide
+      slides.splice(4, 0, tipSlide);
+  }
+
+  if (featuredStory) {
+    const storySlide = {
+        id: 'featured-story',
+        title: 'Uma História',
+        icon: <QuillIcon />,
+        content: (
+            <div className="flex flex-col items-center justify-center text-center h-full p-8 bg-black/20 rounded-xl">
+                <blockquote className="text-2xl lg:text-3xl italic text-white/90 leading-relaxed max-w-3xl border-l-4 pl-6" style={{borderColor: accentColor}}>
+                    "{featuredStory.text}"
+                </blockquote>
+                <p className="mt-6 text-xl font-bold" style={{color: colors.neonGlow}}>- {featuredStory.author}</p>
+            </div>
+        )
+    };
+    slides.splice(5, 0, storySlide);
   }
 
   useEffect(() => {
@@ -825,6 +855,15 @@ const CampaignPage: React.FC<{ campaign: Campaign; onBack: () => void; campaigns
         }
     }
   }, [currentIndex, isMobile, slides.length]);
+  
+  useEffect(() => {
+    if (scrollToSectionId) {
+        const sectionIndex = slides.findIndex(slide => slide.id === scrollToSectionId);
+        if (sectionIndex !== -1) {
+            setCurrentIndex(sectionIndex);
+        }
+    }
+  }, [scrollToSectionId, slides.length]);
 
   return (
     <>
@@ -943,6 +982,7 @@ const CampaignPage: React.FC<{ campaign: Campaign; onBack: () => void; campaigns
                             return (
                                 <div
                                     key={slide.id}
+                                    id={slide.id}
                                     className={`absolute top-0 left-0 w-full h-full bg-black/30 backdrop-blur-2xl rounded-3xl shadow-2xl border border-white/10 text-white flex flex-col transition-transform duration-700 ease-[cubic-bezier(0.4,0,0.2,1)]`}
                                     style={{
                                         transform: `translateY(${offset * 100}%)`,
@@ -956,7 +996,7 @@ const CampaignPage: React.FC<{ campaign: Campaign; onBack: () => void; campaigns
                                         className={`custom-scrollbar w-full h-full p-6 sm:p-8 lg:p-12 pb-12 overflow-y-auto flex flex-col transition-opacity duration-500 ease-out ${
                                             index === currentIndex ? 'opacity-100 delay-300' : 'opacity-0'
                                         } ${
-                                            slide.id === 'quiz' || slide.id === 'myths' || slide.id === 'supporterGuide' ? 'justify-start' : 'justify-center'
+                                            slide.id === 'quiz' || slide.id === 'mythsVsTruths' || slide.id === 'supporterGuide' ? 'justify-start' : 'justify-center'
                                         }`}
                                     >
                                         <section className="text-center w-full">

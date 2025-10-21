@@ -1,5 +1,7 @@
-import React, { useState } from 'react';
-import { Campaign } from '../types';
+import React, { useState, useEffect, useRef } from 'react';
+import { Campaign, CampaignDetails } from '../types';
+import { CAMPAIGNS } from '../constants';
+
 
 interface NavbarProps {
   campaigns: Campaign[];
@@ -8,6 +10,7 @@ interface NavbarProps {
   onHelpClick: () => void;
   onCreatorsClick: () => void;
   onStoriesClick: () => void;
+  onNavigateFromSearch: (campaignId: string, sectionId: string) => void;
 }
 
 const HeartIcon = () => (
@@ -16,8 +19,125 @@ const HeartIcon = () => (
     </svg>
 );
 
+const SearchIcon = () => (
+  <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
+    <path strokeLinecap="round" strokeLinejoin="round" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
+  </svg>
+);
 
-const Navbar: React.FC<NavbarProps> = ({ campaigns, activeIndex, setActiveIndex, onHelpClick, onCreatorsClick, onStoriesClick }) => {
+
+interface SearchResult {
+    campaignId: string;
+    campaignTitle: string;
+    campaignColor: string;
+    sectionId: string;
+    sectionTitle: string;
+    snippet: string;
+}
+
+const SearchComponent: React.FC<{onNavigate: (campaignId: string, sectionId: string) => void}> = ({ onNavigate }) => {
+    const [isFocused, setIsFocused] = useState(false);
+    const [query, setQuery] = useState('');
+    const [results, setResults] = useState<SearchResult[]>([]);
+    const searchRef = useRef<HTMLDivElement>(null);
+
+    useEffect(() => {
+        const handleClickOutside = (event: MouseEvent) => {
+            if (searchRef.current && !searchRef.current.contains(event.target as Node)) {
+                setIsFocused(false);
+            }
+        };
+        document.addEventListener('mousedown', handleClickOutside);
+        return () => document.removeEventListener('mousedown', handleClickOutside);
+    }, []);
+
+    useEffect(() => {
+        if (query.length < 3) {
+            setResults([]);
+            return;
+        }
+
+        const lowerCaseQuery = query.toLowerCase();
+        const searchResults: SearchResult[] = [];
+
+        CAMPAIGNS.forEach(campaign => {
+            Object.entries(campaign.details).forEach(([key, section]) => {
+                if (section && typeof section === 'object' && 'title' in section) {
+                    const sectionTitle = section.title as string;
+                    let contentToSearch = '';
+
+                    // Aggregate content from various section types
+                    if ('items' in section) {
+                        contentToSearch = (section.items as any[]).map(item => typeof item === 'string' ? item : item.name || item.question || item.statement || item.scenario || item.description).join(' ');
+                    } else if ('scenarios' in section) {
+                         contentToSearch = (section.scenarios as any[]).map(item => item.scenario).join(' ');
+                    }
+
+                    if (sectionTitle.toLowerCase().includes(lowerCaseQuery) || contentToSearch.toLowerCase().includes(lowerCaseQuery)) {
+                        searchResults.push({
+                            campaignId: campaign.id,
+                            campaignTitle: campaign.title,
+                            campaignColor: campaign.colors.neon,
+                            sectionId: key,
+                            sectionTitle: sectionTitle,
+                            snippet: `Na campanha ${campaign.title}`
+                        });
+                    }
+                }
+            });
+        });
+        setResults(searchResults.slice(0, 5)); // Limit to 5 results
+    }, [query]);
+    
+    const handleResultClick = (result: SearchResult) => {
+        onNavigate(result.campaignId, result.sectionId);
+        setQuery('');
+        setResults([]);
+        setIsFocused(false);
+    }
+
+    return (
+        <div ref={searchRef} className="relative">
+            <div className={`flex items-center transition-all duration-300 rounded-full ${isFocused ? 'w-64 bg-black/50 ring-2 ring-white/50' : 'w-10 bg-transparent'}`}>
+                <button 
+                  onClick={() => setIsFocused(!isFocused)} 
+                  className="p-2 text-gray-200 hover:text-white focus:outline-none"
+                  aria-label="Abrir busca"
+                >
+                    <SearchIcon />
+                </button>
+                <input
+                    type="text"
+                    placeholder="Buscar por prevenção, direitos..."
+                    value={query}
+                    onChange={(e) => setQuery(e.target.value)}
+                    onFocus={() => setIsFocused(true)}
+                    className={`bg-transparent text-white placeholder-gray-400 focus:outline-none transition-all duration-300 text-sm ${isFocused ? 'w-full opacity-100 pr-4' : 'w-0 opacity-0'}`}
+                />
+            </div>
+            {isFocused && results.length > 0 && (
+                <div className="absolute top-full mt-2 w-72 -right-2 md:right-0 bg-gray-800/90 backdrop-blur-md rounded-lg shadow-2xl border border-white/10 overflow-hidden animate-fade-in-up-sm">
+                    <ul>
+                        {results.map((result, index) => (
+                            <li key={index}>
+                                <button 
+                                    onClick={() => handleResultClick(result)}
+                                    className="w-full text-left px-4 py-3 hover:bg-white/10 transition-colors"
+                                >
+                                    <p className="font-bold text-white">{result.sectionTitle}</p>
+                                    <p className="text-sm" style={{color: result.campaignColor}}>{result.snippet}</p>
+                                </button>
+                            </li>
+                        ))}
+                    </ul>
+                </div>
+            )}
+        </div>
+    );
+};
+
+
+const Navbar: React.FC<NavbarProps> = ({ campaigns, activeIndex, setActiveIndex, onHelpClick, onCreatorsClick, onStoriesClick, onNavigateFromSearch }) => {
   const [isOpen, setIsOpen] = useState(false);
   const activeCampaign = campaigns[activeIndex];
 
@@ -40,7 +160,7 @@ const Navbar: React.FC<NavbarProps> = ({ campaigns, activeIndex, setActiveIndex,
             </a>
           </div>
           <div className="hidden md:block">
-            <div className="ml-10 flex items-center">
+            <div className="ml-10 flex items-center space-x-2">
               {campaigns.map((campaign, index) => (
                 <a
                   key={campaign.id}
@@ -74,14 +194,16 @@ const Navbar: React.FC<NavbarProps> = ({ campaigns, activeIndex, setActiveIndex,
                 </a>
                <button
                   onClick={onHelpClick}
-                  className={`ml-6 px-4 py-2 rounded-full font-bold shadow-lg transition-all transform hover:scale-105 focus:outline-none flex items-center ring-2 ring-offset-2 ring-offset-gray-900 ${activeCampaign.colors.text} ${activeCampaign.colors.ring} hover:bg-white/10`}
+                  className={`ml-4 px-4 py-2 rounded-full font-bold shadow-lg transition-all transform hover:scale-105 focus:outline-none flex items-center ring-2 ring-offset-2 ring-offset-gray-900 ${activeCampaign.colors.text} ${activeCampaign.colors.ring} hover:bg-white/10`}
                 >
                   <HeartIcon />
                   Ajuda Rápida
                 </button>
+                <SearchComponent onNavigate={onNavigateFromSearch} />
             </div>
           </div>
-          <div className="-mr-2 flex md:hidden">
+          <div className="-mr-2 flex md:hidden items-center">
+             <SearchComponent onNavigate={onNavigateFromSearch} />
             <button
               onClick={() => setIsOpen(!isOpen)}
               type="button"
