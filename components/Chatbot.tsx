@@ -105,8 +105,19 @@ const Chatbot: React.FC<ChatbotProps> = ({ activeCampaign }) => {
   const [initialSuggestions, setInitialSuggestions] = useState<string[]>([]);
   
   useEffect(() => {
+    if (!process.env.API_KEY) {
+      console.error("Erro ao inicializar o chatbot: A variável de ambiente API_KEY não está definida.");
+      const errorMessage: ChatMessage = {
+          role: 'model',
+          content: "Olá! Parece que a chave de API para o assistente virtual não foi configurada corretamente. Por favor, verifique as variáveis de ambiente do projeto."
+      };
+      setMessages([errorMessage]);
+      setIsLoading(false);
+      return;
+    }
+
     try {
-      const ai = new GoogleGenAI({ apiKey: process.env.API_KEY as string });
+      const ai = new GoogleGenAI({ apiKey: process.env.API_KEY });
       chatRef.current = ai.chats.create({
         model: 'gemini-2.5-flash',
         config: { systemInstruction: SYSTEM_INSTRUCTION },
@@ -138,7 +149,7 @@ const Chatbot: React.FC<ChatbotProps> = ({ activeCampaign }) => {
   }, [messages, isLoading]);
 
   const handleSendMessage = async (messageText: string) => {
-    if (!messageText.trim() || isLoading) return;
+    if (!messageText.trim() || isLoading || !chatRef.current) return;
 
     const userMessage: ChatMessage = { role: 'user', content: messageText };
     setMessages(prev => [...prev, userMessage]);
@@ -147,8 +158,6 @@ const Chatbot: React.FC<ChatbotProps> = ({ activeCampaign }) => {
     if(initialSuggestions.length > 0) setInitialSuggestions([]);
 
     try {
-        if (!chatRef.current) throw new Error("Chat não inicializado.");
-        
         const responseStream = await chatRef.current.sendMessageStream({ message: messageText });
 
         let currentModelMessage = '';
@@ -249,8 +258,9 @@ const Chatbot: React.FC<ChatbotProps> = ({ activeCampaign }) => {
                     placeholder="Digite sua mensagem..."
                     className="w-full bg-gray-900/70 border border-gray-600 rounded-full py-2 px-4 text-white placeholder-gray-400 focus:outline-none focus:ring-2"
                     style={{'--tw-ring-color': activeCampaign.colors.neon} as React.CSSProperties}
+                    disabled={!chatRef.current}
                 />
-                <button type="submit" disabled={isLoading} className="p-3 rounded-full text-white disabled:opacity-50 transition-all" style={{backgroundColor: activeCampaign.colors.neon}}>
+                <button type="submit" disabled={isLoading || !chatRef.current} className="p-3 rounded-full text-white disabled:opacity-50 transition-all" style={{backgroundColor: activeCampaign.colors.neon}}>
                     <SendIcon />
                 </button>
             </div>
