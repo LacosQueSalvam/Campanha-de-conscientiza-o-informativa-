@@ -776,37 +776,117 @@ export const CAMPAIGNS: Campaign[] = [
   },
 ];
 
-export const AUTOPLAY_INTERVAL = 7000; // 7 seconds
+// FIX: Generate and export CONTEXT_FOR_CHATBOT for the Gemini model.
+// This helper function stringifies campaign details for the chatbot context. It is not exported.
+const generateChatbotContext = (campaigns: Campaign[]): string => {
+  let context = '';
+  campaigns.forEach(campaign => {
+    context += `\n\n# Campanha: ${campaign.title}\n\n`;
+    context += `**Descrição:** ${campaign.longDescription}\n\n`;
 
+    const details = campaign.details;
 
-const formatCampaignDataForAI = (campaign: Campaign) => {
-  let content = `
----
-Campanha: ${campaign.title} (${campaign.id})
-Descrição: ${campaign.longDescription}
+    if (details.symptoms) {
+      context += `## ${details.symptoms.title}\n`;
+      details.symptoms.items.forEach(item => {
+        context += `* ${item}\n`;
+      });
+      if (details.symptoms.source) {
+        context += `Fonte: ${details.symptoms.source.name}\n`;
+      }
+      context += '\n';
+    }
 
-Sinais e Sintomas:
-${campaign.details.symptoms.items.map(item => `- ${item}`).join('\n')}
+    if (details.stats) {
+      context += `## ${details.stats.title}\n`;
+      details.stats.items.forEach(item => {
+        context += `* **${item.value} ${item.label}:** ${item.description} (Dados de: ${item.year}, Fonte: ${item.source})\n`;
+      });
+      context += '\n';
+    }
 
-Dados e Estatísticas:
-${campaign.details.stats.items.map(item => `- ${item.value} ${item.label}: ${item.description}`).join('\n')}
+    if (details.prevention) {
+      context += `## ${details.prevention.title}\n`;
+      details.prevention.items.forEach(item => {
+        context += `* ${item}\n`;
+      });
+      if (details.prevention.source) {
+        context += `Fonte: ${details.prevention.source.name}\n`;
+      }
+      context += '\n';
+    }
+    
+    if (details.riskFactors) {
+      context += `## ${details.riskFactors.title}\n`;
+      details.riskFactors.items.forEach(item => {
+        context += `* ${item}\n`;
+      });
+      if (details.riskFactors.source) {
+        context += `Fonte: ${details.riskFactors.source.name}\n`;
+      }
+      context += '\n';
+    }
+    
+    if (details.patientRights) {
+        context += `## ${details.patientRights.title}\n`;
+        details.patientRights.items.forEach(item => {
+          context += `### ${item.name}\n`;
+          context += `${item.description}\n`;
+          if (item.source) {
+            context += `Fonte: ${item.source.name}\n`;
+          }
+        });
+        context += '\n';
+    }
+    
+    if (details.tips) {
+        context += `## ${details.tips.title}\n`;
+        details.tips.items.forEach(item => {
+            context += `* ${item}\n`;
+        });
+        context += '\n';
+    }
+    
+    if (details.supporterGuide) {
+        context += `## ${details.supporterGuide.title}\n`;
+        details.supporterGuide.scenarios.forEach(scenario => {
+            context += `### Cenário: ${scenario.scenario}\n`;
+            context += `* **Resposta Construtiva:** "${scenario.goodResponse.text}" (Explicação: ${scenario.goodResponse.explanation})\n`;
+            context += `* **Resposta a Evitar:** "${scenario.badResponse.text}" (Explicação: ${scenario.badResponse.explanation})\n`;
+        });
+        context += '\n';
+    }
 
-Prevenção e Cuidados:
-${campaign.details.prevention.items.map(item => `- ${item}`).join('\n')}
+    if (details.help) {
+      context += `## ${details.help.title}\n`;
+      details.help.items.forEach(item => {
+        context += `### ${item.name}\n`;
+        context += `${item.description}\n`;
+        context += `Link: ${item.link}\n`;
+        if (item.phone) {
+          context += `Telefone: ${item.phone}\n`;
+        }
+      });
+      context += '\n';
+    }
 
-Onde Buscar Ajuda:
-${campaign.details.help.items.map(item => `- ${item.name}: ${item.description} (Telefone: ${item.phone || 'N/A'}, Site: ${item.link})`).join('\n')}
-`;
+    if (details.mythsVsTruths) {
+        context += `## ${details.mythsVsTruths.title}\n`;
+        details.mythsVsTruths.items.forEach(item => {
+            context += `* **Afirmação:** "${item.statement}"\n`;
+            context += `  * **Isso é um ${item.isMyth ? 'Mito' : 'Verdade'}.**\n`;
+            context += `  * **Explicação:** ${item.explanation}\n`;
+        });
+        if (details.mythsVsTruths.source) {
+            context += `Fonte: ${details.mythsVsTruths.source.name}\n`;
+        }
+        context += '\n';
+    }
 
-  if (campaign.details.riskFactors) {
-    content += `\nFatores de Risco:\n${campaign.details.riskFactors.items.map(item => `- ${item}`).join('\n')}`;
-  }
-  if (campaign.details.patientRights) {
-    content += `\nDireitos do Paciente:\n${campaign.details.patientRights.items.map(item => `- ${item.name}: ${item.description}`).join('\n')}`;
-  }
-
-  return content;
+  });
+  return context;
 };
 
+export const CONTEXT_FOR_CHATBOT = generateChatbotContext(CAMPAIGNS);
 
-export const CONTEXT_FOR_CHATBOT = CAMPAIGNS.map(formatCampaignDataForAI).join('\n\n');
+export const AUTOPLAY_INTERVAL = 7000; // 7 seconds

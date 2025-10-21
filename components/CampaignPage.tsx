@@ -3,7 +3,6 @@ import { Campaign, Quiz as QuizType, MythOrTruth, Story } from '../types';
 import { INITIAL_STORIES } from '../data/stories';
 import HelpModal from './HelpModal';
 import SupporterScenario from './SupporterScenario';
-import Chatbot from './Chatbot';
 
 // --- CUSTOM HOOK for Media Query ---
 const useMediaQuery = (query: string) => {
@@ -1003,7 +1002,7 @@ const CampaignPage: React.FC<{ campaign: Campaign; onBack: () => void; campaigns
                                         <section className="text-center w-full">
                                             <div className="flex items-center justify-center gap-4 mb-8">
                                                 <div className="w-10 h-10" style={{color: accentColor}}>{slide.icon}</div>
-                                                <h3 className="text-3xl md:text-4xl font-bold" style={{color: accentColor, textShadow: `0 0 15px ${colors.neonGlow}`}}>
+                                                <h3 className="text-2xl sm:text-3xl md:text-4xl font-bold" style={{color: accentColor, textShadow: `0 0 15px ${colors.neonGlow}`}}>
                                                     {details[slide.id as keyof typeof details]?.title || slide.title}
                                                 </h3>
                                             </div>
@@ -1019,7 +1018,6 @@ const CampaignPage: React.FC<{ campaign: Campaign; onBack: () => void; campaigns
                 </div>
             </main>
         </div>
-        <Chatbot activeCampaign={campaign} />
     </>
   );
 };

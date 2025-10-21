@@ -9,7 +9,6 @@ import { Campaign } from './types';
 import BackgroundEffects from './components/BackgroundEffects';
 import CreatorsPage from './components/CreatorsPage';
 import StoriesPage from './components/StoriesPage';
-import Chatbot from './components/Chatbot';
 
 function App() {
   const [carouselIndex, setCarouselIndex] = useState<number>(0);
@@ -117,7 +116,6 @@ function App() {
         />
       )}
       
-      <Chatbot activeCampaign={activeCampaign} />
     </>
   );
 }

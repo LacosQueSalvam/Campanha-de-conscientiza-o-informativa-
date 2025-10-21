@@ -2,7 +2,6 @@ import React, { useState } from 'react';
 import { Campaign, Story } from '../types';
 import { INITIAL_STORIES } from '../data/stories';
 import BackgroundEffects from './BackgroundEffects';
-import Chatbot from './Chatbot';
 
 const BackArrowIcon = () => (
     <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5 mr-2" fill="none" viewBox="0 0 24 24" stroke="currentColor">
@@ -169,7 +168,7 @@ const StoriesPage: React.FC<StoriesPageProps> = ({ onBack, campaigns, activeCamp
         <main className="flex-grow flex flex-col items-center p-4 overflow-y-auto custom-scrollbar">
             <div className="container mx-auto px-4 sm:px-6 lg:px-8 text-center">
                 <h1 
-                    className="text-5xl md:text-7xl font-black uppercase"
+                    className="text-4xl sm:text-5xl md:text-7xl font-black uppercase"
                     style={{ color: activeCampaign.colors.neon, textShadow: `0 0 15px ${activeCampaign.colors.neonGlow}` }}
                 >
                     Mural de Histórias
@@ -297,7 +296,6 @@ const StoriesPage: React.FC<StoriesPageProps> = ({ onBack, campaigns, activeCamp
         </main>
       </div>
     </div>
-    <Chatbot activeCampaign={activeCampaign} />
     </>
   );
 };

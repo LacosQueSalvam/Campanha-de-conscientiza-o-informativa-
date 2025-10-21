@@ -141,12 +141,12 @@ const Carousel: React.FC<CarouselProps> = ({ campaigns, activeIndex, setActiveIn
                   }}
                 />
 
-                <h1 className={`text-4xl sm:text-6xl lg:text-8xl drop-shadow-lg transition-transform duration-700 ease-out uppercase neon-text-main ${
+                <h1 className={`text-4xl sm:text-5xl md:text-6xl lg:text-8xl drop-shadow-lg transition-transform duration-700 ease-out uppercase neon-text-main ${
                     index === activeIndex ? 'translate-y-0' : '-translate-y-4'
                 }`}>
                   {campaign.title}
                 </h1>
-                <div className={`mt-4 text-lg md:text-2xl max-w-2xl drop-shadow-md transition-opacity duration-700 ease-out delay-200 min-h-[64px] neon-text-subtle ${
+                <div className={`mt-4 text-lg md:text-xl lg:text-2xl max-w-2xl drop-shadow-md transition-opacity duration-700 ease-out delay-200 min-h-[64px] neon-text-subtle ${
                     index === activeIndex ? 'opacity-100' : 'opacity-0'
                 }`}>
                   {index === activeIndex ? <TypingEffect text={campaign.description} /> : null}
