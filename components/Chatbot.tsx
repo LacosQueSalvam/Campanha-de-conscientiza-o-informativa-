@@ -52,18 +52,44 @@ ${CONTEXT_FOR_CHATBOT}
 `;
 
 const FormattedMessage: React.FC<{ content: string }> = ({ content }) => {
-    // Split by bold markdown, keeping the delimiter
-    const parts = content.split(/(\*\*.*?\*\*)/g);
+    // Helper to process inline formatting like bold text.
+    const renderInline = (text: string) => {
+        const parts = text.split(/(\*\*.*?\*\*)/g).filter(Boolean);
+        return parts.map((part, index) => {
+            if (part.startsWith('**') && part.endsWith('**')) {
+                return <strong key={index}>{part.slice(2, -2)}</strong>;
+            }
+            return part;
+        });
+    };
+
+    // Process blocks of content (paragraphs or lists).
+    const blocks = content.split(/\n{2,}/); // Split by 2 or more newlines
 
     return (
         <>
-            {parts.map((part, index) => {
-                if (part.startsWith('**') && part.endsWith('**')) {
-                    // It's a bold part, remove the asterisks and wrap in <strong>
-                    return <strong key={index}>{part.slice(2, -2)}</strong>;
+            {blocks.map((block, blockIndex) => {
+                const trimmedBlock = block.trim();
+                
+                // Check if the block is a list.
+                if (trimmedBlock.startsWith('* ')) {
+                    const listItems = trimmedBlock.split('\n').map(item => item.trim().replace(/^\*\s*/, ''));
+                    return (
+                        <ul key={blockIndex} className="list-disc list-inside space-y-1 my-2">
+                            {listItems.map((item, itemIndex) => (
+                                <li key={itemIndex}>{renderInline(item)}</li>
+                            ))}
+                        </ul>
+                    );
                 }
-                // It's a regular text part
-                return <React.Fragment key={index}>{part}</React.Fragment>;
+                
+                // Otherwise, treat it as a paragraph.
+                // The parent container has `whitespace-pre-wrap`, so single newlines are preserved.
+                if (trimmedBlock) {
+                    return <p key={blockIndex}>{renderInline(trimmedBlock)}</p>;
+                }
+
+                return null;
             })}
         </>
     );

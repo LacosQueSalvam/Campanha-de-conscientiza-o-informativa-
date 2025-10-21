@@ -1,6 +1,5 @@
 import React from 'react';
 
-// FIX: Add style prop to allow for dynamic styling from the parent component.
 const AuraIcon: React.FC<{className?: string, style?: React.CSSProperties}> = ({ className, style }) => {
   return (
     <svg 
