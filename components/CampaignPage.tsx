@@ -3,6 +3,7 @@ import { Campaign, Quiz as QuizType, MythOrTruth, Story } from '../types';
 import { INITIAL_STORIES } from '../data/stories';
 import HelpModal from './HelpModal';
 import SupporterScenario from './SupporterScenario';
+import Chatbot from './Chatbot';
 
 // --- CUSTOM HOOK for Media Query ---
 const useMediaQuery = (query: string) => {
@@ -1018,6 +1019,7 @@ const CampaignPage: React.FC<{ campaign: Campaign; onBack: () => void; campaigns
                 </div>
             </main>
         </div>
+        <Chatbot activeCampaign={campaign} />
     </>
   );
 };

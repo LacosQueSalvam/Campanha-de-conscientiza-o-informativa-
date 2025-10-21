@@ -777,3 +777,36 @@ export const CAMPAIGNS: Campaign[] = [
 ];
 
 export const AUTOPLAY_INTERVAL = 7000; // 7 seconds
+
+
+const formatCampaignDataForAI = (campaign: Campaign) => {
+  let content = `
+---
+Campanha: ${campaign.title} (${campaign.id})
+Descrição: ${campaign.longDescription}
+
+Sinais e Sintomas:
+${campaign.details.symptoms.items.map(item => `- ${item}`).join('\n')}
+
+Dados e Estatísticas:
+${campaign.details.stats.items.map(item => `- ${item.value} ${item.label}: ${item.description}`).join('\n')}
+
+Prevenção e Cuidados:
+${campaign.details.prevention.items.map(item => `- ${item}`).join('\n')}
+
+Onde Buscar Ajuda:
+${campaign.details.help.items.map(item => `- ${item.name}: ${item.description} (Telefone: ${item.phone || 'N/A'}, Site: ${item.link})`).join('\n')}
+`;
+
+  if (campaign.details.riskFactors) {
+    content += `\nFatores de Risco:\n${campaign.details.riskFactors.items.map(item => `- ${item}`).join('\n')}`;
+  }
+  if (campaign.details.patientRights) {
+    content += `\nDireitos do Paciente:\n${campaign.details.patientRights.items.map(item => `- ${item.name}: ${item.description}`).join('\n')}`;
+  }
+
+  return content;
+};
+
+
+export const CONTEXT_FOR_CHATBOT = CAMPAIGNS.map(formatCampaignDataForAI).join('\n\n');

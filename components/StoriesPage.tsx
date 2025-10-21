@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import { Campaign, Story } from '../types';
 import { INITIAL_STORIES } from '../data/stories';
 import BackgroundEffects from './BackgroundEffects';
+import Chatbot from './Chatbot';
 
 const BackArrowIcon = () => (
     <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5 mr-2" fill="none" viewBox="0 0 24 24" stroke="currentColor">
@@ -94,6 +95,7 @@ const StoriesPage: React.FC<StoriesPageProps> = ({ onBack, campaigns, activeCamp
   const selectedCampaignForForm = campaigns.find(c => c.id === newStory.campaignId) || activeCampaign;
 
   return (
+    <>
     <div className="relative min-h-screen w-full bg-gray-900 text-white font-sans overflow-hidden flex flex-col">
        <style>
         {`
@@ -295,6 +297,8 @@ const StoriesPage: React.FC<StoriesPageProps> = ({ onBack, campaigns, activeCamp
         </main>
       </div>
     </div>
+    <Chatbot activeCampaign={activeCampaign} />
+    </>
   );
 };
 

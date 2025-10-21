@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import { Campaign } from '../types';
 import BackgroundEffects from './BackgroundEffects';
+import Chatbot from './Chatbot';
 
 const BackArrowIcon = () => (
     <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5 mr-2" fill="none" viewBox="0 0 24 24" stroke="currentColor">
@@ -29,6 +30,7 @@ const CreatorsPage: React.FC<CreatorsPageProps> = ({ onBack, activeCampaign }) =
   };
 
   return (
+    <>
     <div className="relative min-h-screen w-full bg-gray-900 text-white font-sans overflow-hidden flex flex-col">
         <style>
         {`
@@ -118,6 +120,8 @@ const CreatorsPage: React.FC<CreatorsPageProps> = ({ onBack, activeCampaign }) =
         </main>
       </div>
     </div>
+    <Chatbot activeCampaign={activeCampaign} />
+    </>
   );
 };
 

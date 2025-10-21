@@ -63,6 +63,11 @@ export interface Story {
   text: string;
 }
 
+export interface ChatMessage {
+  role: 'user' | 'model';
+  content: string;
+}
+
 export interface CampaignDetails {
   symptoms: {
     title: string;
