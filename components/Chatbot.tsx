@@ -104,13 +104,15 @@ const Chatbot: React.FC<ChatbotProps> = ({ activeCampaign }) => {
   const messagesEndRef = useRef<HTMLDivElement>(null);
   const [initialSuggestions, setInitialSuggestions] = useState<string[]>([]);
   
-  // FIX: Switched to process.env.API_KEY as per the guidelines to fix the TypeScript error and align with best practices.
   useEffect(() => {
-    if (!process.env.API_KEY) {
-      console.error("Erro ao inicializar o chatbot: A variável de ambiente API_KEY não está definida.");
+    // FIX: Switched from `import.meta.env.VITE_API_KEY` to `process.env.API_KEY` to align with project guidelines.
+    const apiKey = process.env.VITE_API_KEY;
+
+    if (!apiKey) {
+      console.error("Erro ao inicializar o chatbot: A variável de ambiente VITE_API_KEY não está definida.");
       const errorMessage: ChatMessage = {
           role: 'model',
-          content: "Olá! Parece que a chave de API para o assistente virtual não foi configurada. Certifique-se de que a variável de ambiente `API_KEY` está definida no seu ambiente."
+          content: "Olá! Parece que a chave de API para o assistente virtual não foi configurada. Certifique-se de que a variável de ambiente `API_KEY` está definida."
       };
       setMessages([errorMessage]);
       setIsLoading(false);
@@ -118,7 +120,7 @@ const Chatbot: React.FC<ChatbotProps> = ({ activeCampaign }) => {
     }
 
     try {
-      const ai = new GoogleGenAI({ apiKey: process.env.API_KEY });
+      const ai = new GoogleGenAI({ apiKey });
       chatRef.current = ai.chats.create({
         model: 'gemini-2.5-flash',
         config: { systemInstruction: SYSTEM_INSTRUCTION },
