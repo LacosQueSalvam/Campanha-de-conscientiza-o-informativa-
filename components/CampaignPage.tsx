@@ -355,9 +355,11 @@ const Quiz: React.FC<{quiz: QuizType, accentColor: string, glowColor: string, on
                         <div className={`p-4 rounded-lg text-lg font-bold ${wasCorrect ? 'bg-green-500/20 text-green-300' : 'bg-red-500/20 text-red-300'}`}>
                            {wasCorrect ? 'Você acertou!' : 'Resposta Incorreta!'}
                         </div>
-                        <div className="p-4 bg-black/30 rounded-lg text-white/80 text-sm">
-                            <p><strong style={{color: accentColor}}>Explicação:</strong> {currentQuestion.explanation}</p>
-                        </div>
+                        {!wasCorrect && (
+                            <div className="p-4 bg-black/30 rounded-lg text-white/80 text-sm">
+                                <p><strong style={{color: accentColor}}>Explicação:</strong> {currentQuestion.explanation}</p>
+                            </div>
+                        )}
                         <button
                             onClick={handleNextQuestion}
                             className="w-full px-6 py-4 rounded-full font-bold text-gray-900 shadow-lg transition-transform transform hover:scale-105"
