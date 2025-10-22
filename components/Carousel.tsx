@@ -2,6 +2,7 @@ import React, { useEffect, useState } from 'react';
 import { Campaign } from '../types';
 import { AUTOPLAY_INTERVAL } from '../constants';
 import TypingEffect from './TypingEffect';
+import BackgroundEffects from './BackgroundEffects';
 
 interface CarouselProps {
   campaigns: Campaign[];
@@ -114,7 +115,10 @@ const Carousel: React.FC<CarouselProps> = ({ campaigns, activeIndex, setActiveIn
           ))}
         </div>
       </div>
-
+      
+      <div className="absolute inset-0 bg-black/60 z-0"></div>
+      
+      <BackgroundEffects activeCampaign={activeCampaign} />
 
       {/* Content */}
       <div className="relative z-10 text-white px-4 w-full h-full" style={{
