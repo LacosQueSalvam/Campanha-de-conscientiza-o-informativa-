@@ -682,7 +682,7 @@ const CampaignPage: React.FC<{ campaign: Campaign; onBack: () => void; campaigns
                     <h4 className="text-lg font-bold text-white/90 mt-2">{stat.label}</h4>
                      {stat.year && (
                         <div className="my-2 text-xs font-bold px-2.5 py-1 rounded-full uppercase tracking-wider" style={{ backgroundColor: hexToRgba(accentColor, 0.15), color: hexToRgba(accentColor, 0.9) }}>
-                            Dados de {stat.year}
+                            {String(stat.year).match(/^\d/) ? `Dados de ${stat.year}` : stat.year}
                         </div>
                     )}
                     <p className="text-sm text-white/60 flex-grow px-2">{stat.description}</p>
