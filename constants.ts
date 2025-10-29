@@ -44,8 +44,7 @@ export const CAMPAIGNS: Campaign[] = [
           {
             value: '96,8%',
             label: 'Transtornos Mentais',
-            description: 'Dos casos de suicídio estão relacionados a transtornos mentais, como depressão e bipolaridade.',
-            year: 'Estimativa',
+            description: 'Percentual de casos de suicídio relacionados a transtornos mentais. Este é um dado consolidado, não uma estatística anual.',
             source: 'Ministério da Saúde',
           },
           {
@@ -306,8 +305,7 @@ export const CAMPAIGNS: Campaign[] = [
           {
             value: '95%',
             label: 'Chance de Cura',
-            description: 'Quando diagnosticado em estágio inicial, as chances de tratamento bem-sucedido são altíssimas.',
-            year: 'Estimativa',
+            description: 'Estimativa de cura para casos de câncer de mama diagnosticados em estágio inicial. A taxa é baseada em dados consolidados de vários anos.',
             source: 'FEMAMA',
           },
         ],
@@ -800,7 +798,8 @@ const generateChatbotContext = (campaigns: Campaign[]): string => {
     if (details.stats) {
       context += `## ${details.stats.title}\n`;
       details.stats.items.forEach(item => {
-        context += `* **${item.value} ${item.label}:** ${item.description} (Dados de: ${item.year}, Fonte: ${item.source})\n`;
+        const yearInfo = item.year ? `(Dados de: ${item.year}, Fonte: ${item.source})` : `(Fonte: ${item.source})`;
+        context += `* **${item.value} ${item.label}:** ${item.description} ${yearInfo}\n`;
       });
       context += '\n';
     }
