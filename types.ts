@@ -128,10 +128,6 @@ export interface Campaign {
 
 // FIX: Add ChatMessage interface for use in the Chatbot component.
 export interface ChatMessage {
-  role: 'user' | 'model' | 'error';
+  role: 'user' | 'model';
   content: string;
-  groundingSources?: {
-    title: string;
-    uri: string;
-  }[];
 }
