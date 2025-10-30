@@ -8,6 +8,7 @@ import { CAMPAIGNS } from './constants';
 import { Campaign } from './types';
 import CreatorsPage from './components/CreatorsPage';
 import StoriesPage from './components/StoriesPage';
+import Chatbot from './components/Chatbot';
 
 function App() {
   const [carouselIndex, setCarouselIndex] = useState<number>(0);
@@ -97,6 +98,8 @@ function App() {
           onClose={() => setIsHelpModalOpen(false)}
         />
       )}
+
+      <Chatbot activeCampaign={activeCampaign} />
       
     </>
   );
