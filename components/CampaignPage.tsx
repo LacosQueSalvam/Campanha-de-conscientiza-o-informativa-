@@ -3,6 +3,7 @@ import { Campaign, Quiz as QuizType, MythOrTruth, Story } from '../types';
 import { INITIAL_STORIES } from '../data/stories';
 import HelpModal from './HelpModal';
 import SupporterScenario from './SupporterScenario';
+import Chatbot from './Chatbot';
 
 // --- CUSTOM HOOK for Media Query ---
 const useMediaQuery = (query: string) => {
@@ -355,11 +356,9 @@ const Quiz: React.FC<{quiz: QuizType, accentColor: string, glowColor: string, on
                         <div className={`p-4 rounded-lg text-lg font-bold ${wasCorrect ? 'bg-green-500/20 text-green-300' : 'bg-red-500/20 text-red-300'}`}>
                            {wasCorrect ? 'Você acertou!' : 'Resposta Incorreta!'}
                         </div>
-                        {!wasCorrect && (
-                            <div className="p-4 bg-black/30 rounded-lg text-white/80 text-sm">
-                                <p><strong style={{color: accentColor}}>Explicação:</strong> {currentQuestion.explanation}</p>
-                            </div>
-                        )}
+                        <div className="p-4 bg-black/30 rounded-lg text-white/80 text-sm">
+                            <p><strong style={{color: accentColor}}>Explicação:</strong> {currentQuestion.explanation}</p>
+                        </div>
                         <button
                             onClick={handleNextQuestion}
                             className="w-full px-6 py-4 rounded-full font-bold text-gray-900 shadow-lg transition-transform transform hover:scale-105"
@@ -438,11 +437,11 @@ const MythsVsTruthsSection: React.FC<{ items: MythOrTruth[], source?: {name: str
             </div>
 
             {/* The Card */}
-            <div className="w-full h-72 md:h-80 [perspective:1000px]">
+            <div className="w-full h-80 [perspective:1000px]">
                 <div className={`relative h-full w-full rounded-xl shadow-xl transition-all duration-700 [transform-style:preserve-3d] ${isAnswered ? '[transform:rotateY(180deg)]' : ''}`}>
                     {/* Front */}
                     <div className="absolute inset-0 bg-white/5 rounded-xl p-6 flex flex-col items-center justify-center text-center [backface-visibility:hidden]">
-                        <p className="text-xl md:text-2xl font-bold">{currentItem.topic}</p>
+                        <p className="text-2xl font-bold">{currentItem.topic}</p>
                     </div>
                     {/* Back */}
                     <div className="absolute inset-0 bg-gray-800 rounded-xl p-6 flex flex-col items-center justify-center text-center [transform:rotateY(180deg)] [backface-visibility:hidden]">
@@ -682,7 +681,7 @@ const CampaignPage: React.FC<{ campaign: Campaign; onBack: () => void; campaigns
                     <h4 className="text-lg font-bold text-white/90 mt-2">{stat.label}</h4>
                      {stat.year && (
                         <div className="my-2 text-xs font-bold px-2.5 py-1 rounded-full uppercase tracking-wider" style={{ backgroundColor: hexToRgba(accentColor, 0.15), color: hexToRgba(accentColor, 0.9) }}>
-                            {String(stat.year).match(/^\d/) ? `Dados de ${stat.year}` : stat.year}
+                            Dados de {stat.year}
                         </div>
                     )}
                     <p className="text-sm text-white/60 flex-grow px-2">{stat.description}</p>
@@ -931,7 +930,7 @@ const CampaignPage: React.FC<{ campaign: Campaign; onBack: () => void; campaigns
             </div>
         </header>
         
-            <main className={`flex-grow flex flex-col md:flex-row items-stretch p-2 sm:p-4 md:p-8 gap-2 sm:gap-4 md:gap-8 ${isExiting ? 'animate-fade-out-down' : 'animate-fade-in-up'}`}>
+            <main className={`flex-grow flex flex-col md:flex-row items-stretch p-4 md:p-8 overflow-hidden gap-4 md:gap-8 ${isExiting ? 'animate-fade-out-down' : 'animate-fade-in-up'}`}>
                 {/* --- Responsive Navigation --- */}
                 <aside className="w-full md:w-[16%] md:min-w-[240px] flex-shrink-0 bg-black/20 rounded-2xl p-2 md:p-4">
                     <div ref={navContainerRef} className="relative flex flex-row md:flex-col gap-1 h-full overflow-x-auto md:overflow-x-hidden custom-scrollbar">
@@ -995,16 +994,16 @@ const CampaignPage: React.FC<{ campaign: Campaign; onBack: () => void; campaigns
                                 >
                                     <div 
                                         ref={index === currentIndex ? contentRef : null} 
-                                        className={`custom-scrollbar w-full h-full p-4 sm:p-8 lg:p-12 overflow-y-auto flex flex-col transition-opacity duration-500 ease-out ${
+                                        className={`custom-scrollbar w-full h-full p-6 sm:p-8 lg:p-12 pb-12 overflow-y-auto flex flex-col transition-opacity duration-500 ease-out ${
                                             index === currentIndex ? 'opacity-100 delay-300' : 'opacity-0'
                                         } ${
-                                            slide.id === 'quiz' || slide.id === 'mythsVsTruths' || slide.id === 'supporterGuide' ? 'justify-start' : 'justify-start md:justify-center'
+                                            slide.id === 'quiz' || slide.id === 'mythsVsTruths' || slide.id === 'supporterGuide' ? 'justify-start' : 'justify-center'
                                         }`}
                                     >
                                         <section className="text-center w-full">
                                             <div className="flex items-center justify-center gap-4 mb-8">
                                                 <div className="w-10 h-10" style={{color: accentColor}}>{slide.icon}</div>
-                                                <h3 className="text-2xl sm:text-3xl md:text-4xl font-bold" style={{color: accentColor, textShadow: `0 0 15px ${colors.neonGlow}`}}>
+                                                <h3 className="text-3xl md:text-4xl font-bold" style={{color: accentColor, textShadow: `0 0 15px ${colors.neonGlow}`}}>
                                                     {details[slide.id as keyof typeof details]?.title || slide.title}
                                                 </h3>
                                             </div>
@@ -1020,6 +1019,7 @@ const CampaignPage: React.FC<{ campaign: Campaign; onBack: () => void; campaigns
                 </div>
             </main>
         </div>
+        <Chatbot activeCampaign={campaign} />
     </>
   );
 };

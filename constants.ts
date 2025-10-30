@@ -5,7 +5,7 @@ export const CAMPAIGNS: Campaign[] = [
     id: 'setembro-amarelo',
     title: 'Setembro Amarelo',
     description: 'A campanha de prevenção ao suicídio que salva vidas.',
-    longDescription: 'Setembro Amarelo é uma campanha essencial que ilumina um tema muitas vezes cercado de tabus: a prevenção ao suicídio. Iniciada no Brasil em 2015, a campanha ganha força em setembro, mês que sedia o Dia Mundial de Prevenção do Suicídio (10/09). O objetivo é claro: quebrar o silêncio, promover o diálogo e mostrar que a busca por ajuda é um ato de coragem. Falar é a melhor solução e pode salvar vidas.',
+    longDescription: 'Setembro Amarelo é uma campanha brasileira de prevenção ao suicídio, iniciada em 2015. O mês de setembro foi escolhido para a campanha porque, desde 2003, o dia 10 de setembro é o Dia Mundial de Prevenção do Suicídio. A ideia é promover eventos que abram espaço para debates sobre suicídio e divulgar o tema alertando a população sobre a importância de sua discussão.',
     image: 'https://i.imgur.com/nVRhO1w.jpeg',
     logo: 'https://i.imgur.com/OKReyaz.png',
     objectPosition: 'object-right',
@@ -35,25 +35,25 @@ export const CAMPAIGNS: Campaign[] = [
         title: 'Dados sobre o Suicídio',
         items: [
           {
-            value: '16.262',
+            value: '17.124',
             label: 'Vidas perdidas',
             description: 'Número de suicídios registrados no Brasil.',
-            year: 2022,
-            source: 'UOL / Agenda do Poder',
+            year: 2023,
+            source: 'Anuário Bras. de Segurança Pública',
           },
           {
-            value: '44',
-            label: 'Suicídios por dia',
-            description: 'Média de suicídios por dia no Brasil durante o ano de 2022.',
-            year: 2022,
-            source: 'Agência Cidades',
+            value: '96,8%',
+            label: 'Transtornos Mentais',
+            description: 'Dos casos de suicídio estão relacionados a transtornos mentais, como depressão e bipolaridade.',
+            year: 'Estimativa',
+            source: 'Ministério da Saúde',
           },
           {
-            value: '1 morte',
-            label: 'A cada 32 minutos',
-            description: 'Com 16.262 suicídios em 2022, o Brasil registrou uma morte por suicídio a cada 32 minutos.',
-            year: 2022,
-            source: 'NAT',
+            value: '4ª',
+            label: 'Causa de Morte',
+            description: 'Entre jovens de 15 a 29 anos no mundo, o suicídio é a quarta principal causa de morte.',
+            year: 2019,
+            source: 'OMS',
           },
         ],
       },
@@ -229,36 +229,31 @@ export const CAMPAIGNS: Campaign[] = [
         title: 'Mitos vs. Verdades',
         items: [
           {
-            topic: 'Você acha que o suicídio acontece por uma única causa?',
-            statement: 'O suicídio acontece por uma única causa.',
+            topic: 'Se alguém está pensando em suicídio, tocar no assunto pode piorar a situação e incentivar o ato?',
+            statement: 'Falar sobre suicídio pode incentivar a pessoa a cometer o ato.',
             isMyth: true,
-            explanation: 'O suicídio é resultado de vários fatores — emocionais, psicológicos, sociais e até biológicos. Nunca é algo simples ou isolado.',
+            explanation: 'Falar sobre o assunto de forma aberta e responsável quebra tabus, alivia a angústia e mostra à pessoa que ela não está sozinha, sendo um passo crucial para a prevenção.',
           },
           {
-            topic: 'Falar sobre suicídio pode “dar ideia” para alguém?',
-            statement: 'Falar sobre suicídio pode “dar ideia” para alguém.',
+            topic: 'Quando uma pessoa fala sobre se matar, na maioria das vezes é apenas um blefe para chamar atenção?',
+            statement: 'Quem ameaça se matar só quer chamar atenção.',
             isMyth: true,
-            explanation: 'Conversar de forma acolhedora e responsável pode salvar vidas. O silêncio, sim, pode ser perigoso.',
+            explanation: 'Ameaças de suicídio são um pedido de ajuda. Levar a sério qualquer sinal é fundamental, pois a maioria das pessoas que tiram a própria vida deu avisos antes.',
           },
           {
-            topic: 'A depressão e a ansiedade aumentam o risco de suicídio?',
-            statement: 'A depressão e a ansiedade aumentam o risco de suicídio.',
+            topic: 'Existe uma forte ligação entre transtornos mentais, como a depressão, e o risco de suicídio?',
+            statement: 'Transtornos mentais, como depressão, são a principal causa de suicídio.',
             isMyth: false,
-            explanation: 'Esses transtornos precisam ser levados a sério e tratados com acompanhamento médico e psicológico.',
+            explanation: 'É verdade. Mais de 96% dos casos de suicídio estão relacionados a transtornos mentais. O tratamento adequado é a forma mais eficaz de prevenção.',
           },
           {
-            topic: 'Apenas profissionais de saúde podem ajudar quem pensa em suicídio?',
-            statement: 'Apenas profissionais de saúde podem ajudar quem pensa em suicídio.',
-            isMyth: true,
-            explanation: 'Todos podemos ajudar! Escutar sem julgamento e incentivar a pessoa a procurar ajuda faz toda a diferença.',
-          },
-          {
-            topic: 'Você sabia que existe um número gratuito (188) para conversar com alguém quando estiver mal?',
-            statement: 'Existe um número gratuito (188 - CVV) para conversar e buscar apoio.',
+            topic: 'Procurar ajuda para a saúde mental é um sinal de que a pessoa não consegue lidar com seus problemas sozinha e é fraca?',
+            statement: 'Buscar ajuda profissional é um sinal de força e coragem.',
             isMyth: false,
-            explanation: 'O CVV (Centro de Valorização da Vida) está disponível 24h, de forma gratuita e sigilosa. Falar é um ato de coragem.',
+            explanation: 'É verdade. Reconhecer que precisa de ajuda e procurar um profissional de saúde mental é um passo fundamental e corajoso para a recuperação e o bem-estar.',
           },
         ],
+        source: { name: 'Cartilha "Suicídio: informando para prevenir"', url: 'https://www.abp.org.br/suicidio-informando-para-prevenir' }
       },
     },
   },
@@ -266,7 +261,7 @@ export const CAMPAIGNS: Campaign[] = [
     id: 'outubro-rosa',
     title: 'Outubro Rosa',
     description: 'A conscientização sobre o câncer de mama é um ato de amor.',
-    longDescription: 'Outubro Rosa é um movimento global que colore o mundo com um laço de esperança e conscientização. O foco da campanha é alertar mulheres e a sociedade sobre a importância vital da prevenção e do diagnóstico precoce do câncer de mama. Através da informação, do autoexame e da mamografia, a campanha incentiva o autocuidado e o conhecimento do próprio corpo, lembrando que um toque pode mudar tudo e que a detecção em estágio inicial aumenta exponencialmente as chances de cura.',
+    longDescription: 'Outubro Rosa é uma campanha anual realizada mundialmente em outubro, com a intenção de alertar a sociedade sobre o diagnóstico precoce do câncer de mama. A mobilização visa também à disseminação de dados preventivos e ressalta a importância de olhar com atenção para a saúde, além de lutar por direitos como o atendimento médico e o suporte emocional, garantindo um tratamento de qualidade.',
     image: 'https://i.imgur.com/CFnjotJ.jpeg',
     logo: 'https://i.imgur.com/Rjch5Y3.png',
     objectPosition: 'object-center',
@@ -311,9 +306,9 @@ export const CAMPAIGNS: Campaign[] = [
           {
             value: '95%',
             label: 'Chance de Cura',
-            description: 'A taxa de cura do câncer de mama pode chegar a 95% quando o diagnóstico é feito precocemente.',
-            year: 2023,
-            source: 'INCA',
+            description: 'Quando diagnosticado em estágio inicial, as chances de tratamento bem-sucedido são altíssimas.',
+            year: 'Estimativa',
+            source: 'FEMAMA',
           },
         ],
       },
@@ -493,36 +488,31 @@ export const CAMPAIGNS: Campaign[] = [
         title: 'Mitos vs. Verdades',
         items: [
           {
-            topic: 'Somente quem tem histórico de câncer de mama na família precisa se cuidar?',
-            statement: 'Somente quem tem histórico familiar precisa se preocupar com o câncer de mama.',
+            topic: 'Ao fazer o autoexame, se uma mulher encontrar um nódulo na mama, é quase certeza que se trata de câncer?',
+            statement: 'Achar um nódulo na mama é certeza de câncer.',
             isMyth: true,
-            explanation: 'A maioria dos casos não tem relação hereditária. Toda mulher deve manter seus exames em dia.',
+            explanation: 'Cerca de 80% dos nódulos mamários são benignos (não cancerosos). Mesmo assim, qualquer alteração deve ser investigada por um médico.',
           },
           {
-            topic: 'Homens também podem ter câncer de mama?',
-            statement: 'Homens também podem ter câncer de mama.',
-            isMyth: false,
-            explanation: 'Embora raro, homens também podem desenvolver a doença. Atenção a qualquer alteração na região do peito.',
-          },
-          {
-            topic: 'Fazer o autoexame dispensa a mamografia?',
-            statement: 'O autoexame substitui a mamografia.',
+            topic: 'O uso diário de desodorantes antitranspirantes é um fator de risco comprovado para o câncer de mama?',
+            statement: 'Desodorantes antitranspirantes podem causar câncer de mama.',
             isMyth: true,
-            explanation: 'O autoexame ajuda no autoconhecimento, mas não substitui a mamografia, que detecta tumores bem pequenos.',
+            explanation: 'Não há evidências científicas sólidas que comprovem a relação entre o uso de desodorantes e o desenvolvimento de câncer de mama.',
           },
           {
-            topic: 'Atividade física pode ajudar na prevenção do câncer de mama?',
-            statement: 'Atividade física ajuda a prevenir o câncer de mama.',
+            topic: 'A mamografia é o método mais eficaz para o diagnóstico precoce, ou o autoexame já é suficiente?',
+            statement: 'A mamografia é o método mais eficaz para o diagnóstico precoce.',
             isMyth: false,
-            explanation: 'A prática regular de exercícios equilibra os hormônios e o peso corporal, diminuindo os riscos.',
+            explanation: 'Verdade. A mamografia pode detectar tumores em estágio inicial, antes mesmo de serem palpáveis, aumentando as chances de cura para mais de 95%.',
           },
           {
-            topic: 'Descobrir cedo aumenta as chances de cura?',
-            statement: 'O diagnóstico precoce aumenta as chances de cura.',
+            topic: 'O ato de amamentar oferece uma proteção real para a mãe contra o câncer de mama?',
+            statement: 'Amamentar protege contra o câncer de mama.',
             isMyth: false,
-            explanation: 'Quando diagnosticado no início, o câncer de mama tem mais de 90% de chance de cura. Prevenir é poder!',
+            explanation: 'Verdade. O ato de amamentar promove a renovação das células mamárias e reduz os níveis de certos hormônios, diminuindo o risco de desenvolvimento da doença.',
           },
         ],
+        source: { name: 'INCA - Mitos e Verdades', url: 'https://www.gov.br/inca/pt-br/assuntos/cancer/tipos/mama/mitos-e-verdades' }
       },
     },
   },
@@ -530,7 +520,7 @@ export const CAMPAIGNS: Campaign[] = [
     id: 'novembro-azul',
     title: 'Novembro Azul',
     description: 'Cuidar da saúde também é coisa de homem.',
-    longDescription: 'Novembro Azul é um chamado à ação para todos os homens. A campanha busca quebrar o preconceito e a desinformação que ainda cercam a saúde masculina, com foco principal na prevenção do câncer de próstata — o segundo mais comum entre os brasileiros. Cuidar da saúde é um ato de responsabilidade e coragem. A campanha reforça a importância de consultas e exames anuais, mostrando que a prevenção é o melhor caminho para uma vida longa e saudável.',
+    longDescription: 'Novembro Azul é um movimento mundial que acontece durante o mês de novembro para reforçar a importância da prevenção e do diagnóstico precoce do câncer de próstata. A doença é o segundo tipo de câncer mais comum entre os homens brasileiros e as maiores vítimas são homens a partir dos 50 anos, além de pessoas com presença da doença em parentes de primeiro grau, como pai, irmão ou filho.',
     image: 'https://i.imgur.com/HVDPCNc.jpeg',
     logo: 'https://i.imgur.com/XuVzMm4.png',
     objectPosition: 'object-center',
@@ -756,153 +746,67 @@ export const CAMPAIGNS: Campaign[] = [
         title: 'Mitos vs. Verdades',
         items: [
           {
-            topic: 'O câncer de próstata só atinge homens mais velhos?',
-            statement: 'O câncer de próstata só atinge homens idosos.',
+            topic: 'Se o resultado do exame de sangue PSA estiver normal, um homem pode ficar tranquilo e não precisa fazer o exame de toque retal?',
+            statement: 'O exame de toque retal é desnecessário se o PSA estiver normal.',
             isMyth: true,
-            explanation: 'O risco aumenta com a idade, mas homens a partir dos 45 anos (ou antes, com histórico familiar) já devem se cuidar.',
+            explanation: 'Cerca de 15% dos tumores não elevam o nível de PSA. O toque retal é fundamental para detectar alterações na próstata que o exame de sangue pode não mostrar.',
           },
           {
-            topic: 'O exame de toque é o único jeito de detectar o câncer de próstata?',
-            statement: 'O exame de toque é o único método para detectar o câncer de próstata.',
+            topic: 'É possível um homem ter câncer de próstata em estágio inicial e não sentir absolutamente nenhum sintoma?',
+            statement: 'Câncer de próstata sempre apresenta sintomas em sua fase inicial.',
             isMyth: true,
-            explanation: 'O diagnóstico é feito com toque retal e exame de sangue (PSA). Um complementa o outro.',
+            explanation: 'O câncer de próstata é silencioso no início. Os sintomas geralmente aparecem em estágio avançado, por isso os exames preventivos são tão importantes.',
           },
           {
-            topic: 'Alimentação saudável ajuda na prevenção?',
-            statement: 'Uma alimentação saudável ajuda na prevenção do câncer de próstata.',
+            topic: 'O envelhecimento é considerado o principal e mais significativo fator de risco para o câncer de próstata?',
+            statement: 'A idade é o principal fator de risco para o câncer de próstata.',
             isMyth: false,
-            explanation: 'Frutas, legumes e menos gordura saturada ajudam a reduzir o risco da doença.',
+            explanation: 'Verdade. O risco aumenta significativamente após os 50 anos. Por isso, os exames de rotina são cruciais para homens nessa faixa etária.',
           },
           {
-            topic: 'O câncer de próstata dá sintomas logo no começo?',
-            statement: 'O câncer de próstata apresenta sintomas em sua fase inicial.',
-            isMyth: true,
-            explanation: 'Nos estágios iniciais, geralmente não há sintomas. Por isso, exames de rotina são essenciais.',
-          },
-          {
-            topic: 'Saúde mental também faz parte do Novembro Azul?',
-            statement: 'Novembro Azul também aborda a saúde mental masculina.',
+            topic: 'Adotar um estilo de vida saudável pode realmente diminuir as chances de um homem desenvolver câncer de próstata?',
+            statement: 'Hábitos saudáveis podem ajudar a prevenir o câncer de próstata.',
             isMyth: false,
-            explanation: 'A campanha fala sobre autocuidado completo — corpo e mente. Cuidar de si é um gesto de força, não de fraqueza.',
+            explanation: 'Verdade. Manter uma dieta equilibrada, praticar atividades físicas e evitar o tabagismo e o álcool são práticas que contribuem para a saúde geral e podem reduzir o risco da doença.',
           },
         ],
+        source: { name: 'Instituto Lado a Lado pela Vida', url: 'https://ladoaladopelavida.org.br/cancer-de-prostata-mitos-e-verdades' }
       },
     },
   },
 ];
 
-// FIX: Generate and export CONTEXT_FOR_CHATBOT for the Gemini model.
-// This helper function stringifies campaign details for the chatbot context. It is not exported.
-const generateChatbotContext = (campaigns: Campaign[]): string => {
-  let context = '';
-  campaigns.forEach(campaign => {
-    context += `\n\n# Campanha: ${campaign.title}\n\n`;
-    context += `**Descrição:** ${campaign.longDescription}\n\n`;
+export const AUTOPLAY_INTERVAL = 7000; // 7 seconds
 
-    const details = campaign.details;
 
-    if (details.symptoms) {
-      context += `## ${details.symptoms.title}\n`;
-      details.symptoms.items.forEach(item => {
-        context += `* ${item}\n`;
-      });
-      if (details.symptoms.source) {
-        context += `Fonte: ${details.symptoms.source.name}\n`;
-      }
-      context += '\n';
-    }
+const formatCampaignDataForAI = (campaign: Campaign) => {
+  let content = `
+---
+Campanha: ${campaign.title} (${campaign.id})
+Descrição: ${campaign.longDescription}
 
-    if (details.stats) {
-      context += `## ${details.stats.title}\n`;
-      details.stats.items.forEach(item => {
-        const yearInfo = item.year ? `(Dados de: ${item.year}, Fonte: ${item.source})` : `(Fonte: ${item.source})`;
-        context += `* **${item.value} ${item.label}:** ${item.description} ${yearInfo}\n`;
-      });
-      context += '\n';
-    }
+Sinais e Sintomas:
+${campaign.details.symptoms.items.map(item => `- ${item}`).join('\n')}
 
-    if (details.prevention) {
-      context += `## ${details.prevention.title}\n`;
-      details.prevention.items.forEach(item => {
-        context += `* ${item}\n`;
-      });
-      if (details.prevention.source) {
-        context += `Fonte: ${details.prevention.source.name}\n`;
-      }
-      context += '\n';
-    }
-    
-    if (details.riskFactors) {
-      context += `## ${details.riskFactors.title}\n`;
-      details.riskFactors.items.forEach(item => {
-        context += `* ${item}\n`;
-      });
-      if (details.riskFactors.source) {
-        context += `Fonte: ${details.riskFactors.source.name}\n`;
-      }
-      context += '\n';
-    }
-    
-    if (details.patientRights) {
-        context += `## ${details.patientRights.title}\n`;
-        details.patientRights.items.forEach(item => {
-          context += `### ${item.name}\n`;
-          context += `${item.description}\n`;
-          if (item.source) {
-            context += `Fonte: ${item.source.name}\n`;
-          }
-        });
-        context += '\n';
-    }
-    
-    if (details.tips) {
-        context += `## ${details.tips.title}\n`;
-        details.tips.items.forEach(item => {
-            context += `* ${item}\n`;
-        });
-        context += '\n';
-    }
-    
-    if (details.supporterGuide) {
-        context += `## ${details.supporterGuide.title}\n`;
-        details.supporterGuide.scenarios.forEach(scenario => {
-            context += `### Cenário: ${scenario.scenario}\n`;
-            context += `* **Resposta Construtiva:** "${scenario.goodResponse.text}" (Explicação: ${scenario.goodResponse.explanation})\n`;
-            context += `* **Resposta a Evitar:** "${scenario.badResponse.text}" (Explicação: ${scenario.badResponse.explanation})\n`;
-        });
-        context += '\n';
-    }
+Dados e Estatísticas:
+${campaign.details.stats.items.map(item => `- ${item.value} ${item.label}: ${item.description}`).join('\n')}
 
-    if (details.help) {
-      context += `## ${details.help.title}\n`;
-      details.help.items.forEach(item => {
-        context += `### ${item.name}\n`;
-        context += `${item.description}\n`;
-        context += `Link: ${item.link}\n`;
-        if (item.phone) {
-          context += `Telefone: ${item.phone}\n`;
-        }
-      });
-      context += '\n';
-    }
+Prevenção e Cuidados:
+${campaign.details.prevention.items.map(item => `- ${item}`).join('\n')}
 
-    if (details.mythsVsTruths) {
-        context += `## ${details.mythsVsTruths.title}\n`;
-        details.mythsVsTruths.items.forEach(item => {
-            context += `* **Afirmação:** "${item.statement}"\n`;
-            context += `  * **Isso é um ${item.isMyth ? 'Mito' : 'Verdade'}.**\n`;
-            context += `  * **Explicação:** ${item.explanation}\n`;
-        });
-        if (details.mythsVsTruths.source) {
-            context += `Fonte: ${details.mythsVsTruths.source.name}\n`;
-        }
-        context += '\n';
-    }
+Onde Buscar Ajuda:
+${campaign.details.help.items.map(item => `- ${item.name}: ${item.description} (Telefone: ${item.phone || 'N/A'}, Site: ${item.link})`).join('\n')}
+`;
 
-  });
-  return context;
+  if (campaign.details.riskFactors) {
+    content += `\nFatores de Risco:\n${campaign.details.riskFactors.items.map(item => `- ${item}`).join('\n')}`;
+  }
+  if (campaign.details.patientRights) {
+    content += `\nDireitos do Paciente:\n${campaign.details.patientRights.items.map(item => `- ${item.name}: ${item.description}`).join('\n')}`;
+  }
+
+  return content;
 };
 
-export const CONTEXT_FOR_CHATBOT = generateChatbotContext(CAMPAIGNS);
 
-export const AUTOPLAY_INTERVAL = 7000; // 7 seconds
+export const CONTEXT_FOR_CHATBOT = CAMPAIGNS.map(formatCampaignDataForAI).join('\n\n');

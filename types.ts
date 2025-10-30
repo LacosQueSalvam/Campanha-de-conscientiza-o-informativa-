@@ -63,6 +63,11 @@ export interface Story {
   text: string;
 }
 
+export interface ChatMessage {
+  role: 'user' | 'model';
+  content: string;
+}
+
 export interface CampaignDetails {
   symptoms: {
     title: string;
@@ -124,10 +129,4 @@ export interface Campaign {
     neonGlow: string; // e.g., '#fef08a'
   };
   details: CampaignDetails;
-}
-
-// FIX: Add ChatMessage interface for use in the Chatbot component.
-export interface ChatMessage {
-  role: 'user' | 'model';
-  content: string;
 }

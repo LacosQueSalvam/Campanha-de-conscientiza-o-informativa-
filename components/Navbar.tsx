@@ -116,7 +116,7 @@ const SearchComponent: React.FC<{onNavigate: (campaignId: string, sectionId: str
                 />
             </div>
             {isFocused && results.length > 0 && (
-                <div className="absolute top-full mt-2 w-[90vw] md:w-72 left-1/2 -translate-x-1/2 md:left-auto md:translate-x-0 md:right-0 bg-gray-800/90 backdrop-blur-md rounded-lg shadow-2xl border border-white/10 overflow-hidden animate-fade-in-up-sm">
+                <div className="absolute top-full mt-2 w-72 -right-2 md:right-0 bg-gray-800/90 backdrop-blur-md rounded-lg shadow-2xl border border-white/10 overflow-hidden animate-fade-in-up-sm">
                     <ul>
                         {results.map((result, index) => (
                             <li key={index}>

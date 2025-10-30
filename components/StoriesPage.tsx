@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import { Campaign, Story } from '../types';
 import { INITIAL_STORIES } from '../data/stories';
 import BackgroundEffects from './BackgroundEffects';
+import Chatbot from './Chatbot';
 
 const BackArrowIcon = () => (
     <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5 mr-2" fill="none" viewBox="0 0 24 24" stroke="currentColor">
@@ -56,7 +57,6 @@ const StoriesPage: React.FC<StoriesPageProps> = ({ onBack, campaigns, activeCamp
   const [formVisible, setFormVisible] = useState(false);
   const [formSubmitted, setFormSubmitted] = useState(false);
   const [isExiting, setIsExiting] = useState(false);
-  const [storyToDelete, setStoryToDelete] = useState<number | null>(null);
 
   const [newStory, setNewStory] = useState({ author: '', text: '', campaignId: activeCampaign.id as 'setembro-amarelo' | 'outubro-rosa' | 'novembro-azul' });
   
@@ -81,20 +81,11 @@ const StoriesPage: React.FC<StoriesPageProps> = ({ onBack, campaigns, activeCamp
      setTimeout(() => setFormSubmitted(false), 5000); // Hide message after 5 seconds
   };
   
-  const requestDeleteStory = (storyId: number) => {
-    setStoryToDelete(storyId);
+  const handleDeleteStory = (storyId: number) => {
+      if (window.confirm('Tem certeza que deseja remover esta história? Esta ação não pode ser desfeita.')) {
+          setStories(prevStories => prevStories.filter(story => story.id !== storyId));
+      }
   };
-
-  const confirmDeleteStory = () => {
-    if (storyToDelete === null) return;
-    setStories(prevStories => prevStories.filter(story => story.id !== storyToDelete));
-    setStoryToDelete(null);
-  };
-
-  const cancelDeleteStory = () => {
-    setStoryToDelete(null);
-  };
-
 
   const handleBack = () => {
     setIsExiting(true);
@@ -108,13 +99,6 @@ const StoriesPage: React.FC<StoriesPageProps> = ({ onBack, campaigns, activeCamp
     <div className="relative min-h-screen w-full bg-gray-900 text-white font-sans overflow-hidden flex flex-col">
        <style>
         {`
-            @keyframes fade-in {
-                from { opacity: 0; }
-                to { opacity: 1; }
-            }
-            .animate-fade-in {
-                animation: fade-in 0.3s ease-out forwards;
-            }
             @keyframes fade-in-up {
                 0% { opacity: 0; transform: translateY(20px); }
                 100% { opacity: 1; transform: translateY(0); }
@@ -185,7 +169,7 @@ const StoriesPage: React.FC<StoriesPageProps> = ({ onBack, campaigns, activeCamp
         <main className="flex-grow flex flex-col items-center p-4 overflow-y-auto custom-scrollbar">
             <div className="container mx-auto px-4 sm:px-6 lg:px-8 text-center">
                 <h1 
-                    className="text-4xl sm:text-5xl md:text-7xl font-black uppercase"
+                    className="text-5xl md:text-7xl font-black uppercase"
                     style={{ color: activeCampaign.colors.neon, textShadow: `0 0 15px ${activeCampaign.colors.neonGlow}` }}
                 >
                     Mural de Histórias
@@ -305,7 +289,7 @@ const StoriesPage: React.FC<StoriesPageProps> = ({ onBack, campaigns, activeCamp
                             key={story.id} 
                             story={story} 
                             campaign={campaigns.find(c => c.id === story.campaignId)}
-                            onDelete={requestDeleteStory}
+                            onDelete={handleDeleteStory}
                         />
                     ))}
                 </div>
@@ -313,33 +297,7 @@ const StoriesPage: React.FC<StoriesPageProps> = ({ onBack, campaigns, activeCamp
         </main>
       </div>
     </div>
-
-    {/* Confirmation Modal */}
-    {storyToDelete !== null && (
-        <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/70 backdrop-blur-sm animate-fade-in">
-            <div 
-                className="bg-gray-800 rounded-2xl shadow-2xl p-8 max-w-sm w-full m-4 border border-white/10 animate-fade-in-up"
-                style={{boxShadow: `0 0 25px ${activeCampaign.colors.neonGlow}`}}
-            >
-                <h3 className="text-2xl font-bold text-white mb-4">Confirmar Remoção</h3>
-                <p className="text-gray-300 mb-8">Você tem certeza que deseja remover esta história? Esta ação não pode ser desfeita.</p>
-                <div className="flex justify-end gap-4">
-                    <button
-                        onClick={cancelDeleteStory}
-                        className="px-6 py-2 rounded-full font-semibold bg-gray-600 hover:bg-gray-500 transition-colors"
-                    >
-                        Cancelar
-                    </button>
-                    <button
-                        onClick={confirmDeleteStory}
-                        className="px-6 py-2 rounded-full font-bold bg-red-600 hover:bg-red-500 text-white transition-colors"
-                    >
-                        Remover
-                    </button>
-                </div>
-            </div>
-        </div>
-      )}
+    <Chatbot activeCampaign={activeCampaign} />
     </>
   );
 };
