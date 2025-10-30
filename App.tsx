@@ -6,10 +6,8 @@ import CampaignPage from './components/CampaignPage';
 import HelpModal from './components/HelpModal';
 import { CAMPAIGNS } from './constants';
 import { Campaign } from './types';
-import BackgroundEffects from './components/BackgroundEffects';
 import CreatorsPage from './components/CreatorsPage';
 import StoriesPage from './components/StoriesPage';
-import Chatbot from './components/Chatbot';
 
 function App() {
   const [carouselIndex, setCarouselIndex] = useState<number>(0);
@@ -65,23 +63,6 @@ function App() {
   return (
     <>
       <div className="relative w-full min-h-screen bg-gray-900 overflow-hidden flex flex-col">
-        {/* Background Image & Overlay */}
-        <div className="absolute inset-0 w-full h-full z-0 overflow-hidden">
-          {CAMPAIGNS.map((campaign, index) => (
-            <img
-              key={campaign.id}
-              src={campaign.image}
-              alt={`Fundo da campanha ${campaign.title}`}
-              className={`absolute inset-0 w-full h-full object-cover transition-opacity duration-1000 ease-in-out ${
-                index === carouselIndex ? 'opacity-100' : 'opacity-0'
-              } ${campaign.objectPosition || 'object-center'}`}
-            />
-          ))}
-          <div className="absolute inset-0 bg-black/60"></div>
-        </div>
-
-        <BackgroundEffects activeCampaign={activeCampaign} />
-
         <Navbar
           campaigns={CAMPAIGNS}
           activeIndex={carouselIndex}
@@ -117,7 +98,6 @@ function App() {
         />
       )}
       
-      <Chatbot activeCampaign={activeCampaign} />
     </>
   );
 }

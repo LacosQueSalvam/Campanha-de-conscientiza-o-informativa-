@@ -63,7 +63,8 @@ const HelpModal: React.FC<HelpModalProps> = ({ campaigns, activeCampaign, onClos
         </div>
         
         <div className="px-8 lg:px-10 border-b border-gray-700 flex-shrink-0">
-            <div className="flex items-center gap-4">
+          <div className="overflow-x-auto [scrollbar-width:none] [-ms-overflow-style:none] [&::-webkit-scrollbar]:hidden">
+            <div className="flex items-center gap-4 whitespace-nowrap">
                 {campaigns.map((campaign, index) => (
                     <button
                         key={campaign.id}
@@ -82,6 +83,7 @@ const HelpModal: React.FC<HelpModalProps> = ({ campaigns, activeCampaign, onClos
                     </button>
                 ))}
             </div>
+          </div>
         </div>
 
         <div className="p-8 lg:p-10 bg-black/20 overflow-y-auto min-h-0 flex-grow max-h-[50vh]">
