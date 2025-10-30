@@ -35,15 +35,24 @@ const Chatbot: React.FC<ChatbotProps> = ({ activeCampaign }) => {
     const messagesEndRef = useRef<HTMLDivElement>(null);
     const inputRef = useRef<HTMLInputElement>(null);
 
+    const isApiKeyMissing = !process.env.API_KEY;
+
     const systemInstruction = "You are Aura, a friendly and empathetic health assistant. Your purpose is to provide helpful information about the health campaigns (Setembro Amarelo, Outubro Rosa, Novembro Azul) and assist users in finding nearby health services using the available tools. Always be supportive and clear in your responses. When providing place information, use the provided grounding sources. Respond in Brazilian Portuguese.";
 
     useEffect(() => {
-        setMessages([
-            {
-                role: 'model',
-                content: 'Olá! Eu sou a Aura, sua assistente de saúde. Como posso ajudar hoje? Você pode perguntar sobre as campanhas ou sobre locais de ajuda próximos.'
-            }
-        ]);
+        const baseMessages: ChatMessage[] = [{
+            role: 'model',
+            content: 'Olá! Eu sou a Aura, sua assistente de saúde. Como posso ajudar hoje? Você pode perguntar sobre as campanhas ou sobre locais de ajuda próximos.'
+        }];
+
+        if (isApiKeyMissing) {
+            baseMessages.push({
+                role: 'error',
+                content: 'A chave de API do Gemini não está configurada. O administrador do site precisa configurar a variável de ambiente `API_KEY` para que o chatbot funcione.'
+            });
+        }
+
+        setMessages(baseMessages);
 
         if (navigator.geolocation) {
             navigator.geolocation.getCurrentPosition(
@@ -65,7 +74,7 @@ const Chatbot: React.FC<ChatbotProps> = ({ activeCampaign }) => {
         } else {
             setMessages(prev => [...prev, { role: 'error', content: "Geolocalização não é suportada por este navegador." }]);
         }
-    }, []);
+    }, [isApiKeyMissing]);
     
     useEffect(() => {
         messagesEndRef.current?.scrollIntoView({ behavior: 'smooth' });
@@ -221,13 +230,13 @@ const Chatbot: React.FC<ChatbotProps> = ({ activeCampaign }) => {
                         type="text"
                         value={userInput}
                         onChange={(e) => setUserInput(e.target.value)}
-                        placeholder="Digite sua mensagem..."
-                        disabled={isLoading}
-                        className="w-full bg-gray-800 text-white placeholder-gray-500 px-4 py-2.5 rounded-full focus:outline-none focus:ring-2 focus:ring-[var(--accent-color)] transition-all"
+                        placeholder={isApiKeyMissing ? "Chatbot indisponível." : "Digite sua mensagem..."}
+                        disabled={isLoading || isApiKeyMissing}
+                        className="w-full bg-gray-800 text-white placeholder-gray-500 px-4 py-2.5 rounded-full focus:outline-none focus:ring-2 focus:ring-[var(--accent-color)] transition-all disabled:opacity-60"
                     />
                     <button
                         type="submit"
-                        disabled={isLoading || !userInput.trim()}
+                        disabled={isLoading || !userInput.trim() || isApiKeyMissing}
                         className="w-10 h-10 flex-shrink-0 rounded-full flex items-center justify-center text-gray-900 transition-all duration-200 transform enabled:hover:scale-110 disabled:opacity-50"
                         style={{backgroundColor: 'var(--accent-color)'}}
                         aria-label="Enviar mensagem"
